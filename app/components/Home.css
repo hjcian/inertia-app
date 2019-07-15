@@ -1,0 +1,26 @@
+.container {
+  /* position: absolute; */
+
+  /* top: 30%; */
+
+  /* left: 10px; */
+
+  /* text-align: center; */
+}
+
+.upper {
+
+}
+
+.buttom {
+  display: flex;
+  justify-content: left;
+}
+
+.container h2 {
+  /* font-size: 5rem; */
+}
+
+.container a {
+  /* font-size: 1.4rem; */
+}

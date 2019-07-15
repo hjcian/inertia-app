@@ -1,0 +1,17 @@
+.container {
+  /* display: flex; */
+}
+
+.container h2 {
+  /* font-size: 5rem; */
+}
+
+.container a {
+  /* font-size: 1.4rem; */
+}
+
+.csvReaderInput {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
