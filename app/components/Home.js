@@ -1,8 +1,8 @@
 // @flow
-import React, { Component, Fragment } from 'react';
-import { Link } from 'react-router-dom';
-import routes from '../constants/routes';
-import styles from './Home.css';
+import React, { Component, Fragment } from 'react'
+import { Link } from 'react-router-dom'
+import routes from '../constants/routes'
+import styles from './Home.css'
 
 
 import Import from './Import'

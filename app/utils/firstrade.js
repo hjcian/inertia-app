@@ -5,7 +5,6 @@ const finance = new Finance()
 
 import { stockSet, bondSet } from '../constants/symbols'
 import { parse } from 'postcss';
-import { fetchLatestClosePrice } from './fetcher'
 
 export const SymbolIdx = 0
 export const QuantityIdx = 1
@@ -202,8 +201,6 @@ export class FirstradeRecordContainer {
     ]
   }
   async _display () {
-    const results  = await fetchLatestClosePrice("VT")
-    console.log(JSON.stringify(results, null, 4))
   }
 }
 

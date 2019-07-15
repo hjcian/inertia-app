@@ -1,0 +1,21 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+}
+
+.priceGetter {
+    /* display: flex;     */
+}
+
+.priceGetter.top {
+    border-style: dotted;
+    /* border-color: white; */
+    
+}
+
+.priceGetter.bottom {
+    border-style: dashed;
+    /* border-color: white; */
+
+}

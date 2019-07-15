@@ -1,6 +1,6 @@
 import { stat } from "fs";
 
-export const ohlc = async (symbol, host='https://sandbox.iexapis.com/', token='Tpk_ecd28d7fba8e494f9062d1f017741aac') => {
+export const ohlc = async (symbol, host, token) => {
   let closePrice = -1
   let date = null    
   const url = `${host}stable/stock/${symbol}/ohlc?token=${token}`
