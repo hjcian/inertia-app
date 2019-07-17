@@ -2,19 +2,24 @@
  * @NOTE: Prepend a `~` to css file paths that are in your node_modules
  *        See https://github.com/webpack-contrib/sass-loader#imports
  */
-@import "~@fortawesome/fontawesome-free/css/all.css";
+@import '~@fortawesome/fontawesome-free/css/all.css';
 
 body {
-  position: relative;
-  color: white;
-  height: 100vh;
-  background-color: #232c39;
+  border-style: groove;
 
-  /* background-image: linear-gradient(45deg, rgba(0, 216, 255, 0.5) 10%, rgba(0, 1, 127, 0.7)); */
-  font-family: Arial, Helvetica, Helvetica Neue, serif;
-  overflow-y: hidden;
+  /* min-height: 700px; */
+
+  /* width: 1000px; */
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  overflow-y: auto;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 20px;
+  font-weight: 500;
 }
 
+/* 
 h2 {
   margin: 0;
   font-size: 2.25rem;
@@ -30,9 +35,9 @@ p {
 li {
   list-style: none;
 }
-
+*/
 a {
-  color: white;
+  /* color: white; */
   opacity: 0.75;
   text-decoration: none;
 }

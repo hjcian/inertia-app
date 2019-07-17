@@ -1,0 +1,27 @@
+.entireWindow {
+  /* margin: 0px 0px;
+    padding: 0px 0px; */
+  display: flex;
+}
+
+.sideNav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 100px;
+  width: 20vw;
+  height: 100vh;
+  background: #0b7285;
+  padding: 10px 0 0 0;
+}
+
+.sideNavItems {
+  margin: 15px;
+}
+
+.mainWindow {
+  min-width: 700px;
+  width: 90vw;
+  height: 100vh;
+  background: #e7e6ef;
+}

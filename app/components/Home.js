@@ -9,6 +9,7 @@ import Import from './Import'
 import PriceForm from './PriceForm'
 import ReturnBar from './ReturnBar'
 
+import { dataStore } from '../utils/store'
 
 type Props = {};
 
@@ -27,15 +28,28 @@ export default class Home extends Component<Props> {
   }
 
   render() {
+    const { data: containData, isStored } = dataStore
+    console.log(isStored)
+    console.log(containData)
+    
     const { data, isFilterNull } = this.state
     if (data) {
       data._display()
+      dataStore.save(data)
     }
     return (
       <div className={styles.container} data-tid="container">
         <div className={styles.upper}>
           <Import importData={this.importData}/>
         </div>
+        <Link to={{
+              pathname: routes.a,
+              // data: {
+              //   pass: data
+              // }
+            }}>
+          <i className="fa fa-arrow-right fa-3x" />
+        </Link>
         <div className={styles.buttom}>
           {
             data &&
@@ -50,6 +64,6 @@ export default class Home extends Component<Props> {
           }
         </div>
       </div>
-    );
-  }
+    )
+  }  
 }
