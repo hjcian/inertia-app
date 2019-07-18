@@ -254,10 +254,12 @@
     "yarn": "^1.12.3"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.4.4",
     "@fortawesome/fontawesome-free": "^5.5.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.19",
     "@fortawesome/free-solid-svg-icons": "^5.9.0",
     "@fortawesome/react-fontawesome": "^0.1.4",
+    "core-js": "^2.6.9",
     "devtron": "^1.4.0",
     "electron-debug": "^2.0.0",
     "electron-log": "^2.2.17",
