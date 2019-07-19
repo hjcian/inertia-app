@@ -39,17 +39,12 @@ export default class Home extends Component<Props> {
     }
     return (
       <div className={styles.container} data-tid="container">
+        <h1>
+          Home
+        </h1>
         <div className={styles.upper}>
           <Import importData={this.importData}/>
         </div>
-        <Link to={{
-              pathname: routes.a,
-              // data: {
-              //   pass: data
-              // }
-            }}>
-          <i className="fa fa-arrow-right fa-3x" />
-        </Link>
         <div className={styles.buttom}>
           {
             data &&

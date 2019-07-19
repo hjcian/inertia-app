@@ -1,9 +1,7 @@
 {
   "HOME": "/",
-  "COUNTER": "/counter",
-  "TESTLINK": "/testLink",
   "IMPORT": "/import",
-  "a": "/a",
-  "b": "/b",
-  "c": "/c"
+  "Portfolio": "/portfolio",
+  "Returns": "/returns",
+  "Rebalance": "/rebalance"
 }

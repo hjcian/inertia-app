@@ -5,16 +5,17 @@ import App from './containers/App'
 import HomePage from './containers/HomePage'
 import CounterPage from './containers/CounterPage'
 import ImportPage from './containers/ImportPage'
-import TempPage from './containers/TempPage'
+import PortfolioPage from './containers/PortfolioPage'
+import ReturnsPage from './containers/ReturnsPage'
+import RebalancePage from './containers/RebalancePage'
 
 export default () => (
   <App>
     <Switch>
-      <Route path={routes.a} component={TempPage} />
-      <Route path={routes.b} component={TempPage} />
-      <Route path={routes.c} component={TempPage} />
       <Route path={routes.IMPORT} component={ImportPage} />
-      <Route path={routes.COUNTER} component={CounterPage} />
+      <Route path={routes.Portfolio} component={PortfolioPage} />
+      <Route path={routes.Returns} component={ReturnsPage} />
+      <Route path={routes.Rebalance} component={RebalancePage} />
       <Route path={routes.HOME} component={HomePage} />
     </Switch>
   </App>
