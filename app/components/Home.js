@@ -6,8 +6,8 @@ import styles from './Home.css'
 
 
 import Import from './Import'
-import PriceForm from './PriceForm'
-import ReturnBar from './ReturnBar'
+// import PriceForm from './SubComponents/PriceForm'
+// import ReturnBar from './Charts/ReturnBar'
 
 import { dataStore } from '../utils/store'
 
@@ -46,7 +46,7 @@ export default class Home extends Component<Props> {
           <Import importData={this.importData}/>
         </div>
         <div className={styles.buttom}>
-          {
+          {/* {
             data &&
             <PriceForm symbols={data.getSymbols()} importCurrentPrices={this.importCurrentPrices}/>
           }
@@ -56,7 +56,7 @@ export default class Home extends Component<Props> {
               <ReturnBar data={data.getDetailReturns()} isFilterNull={isFilterNull}/>
               <ReturnBar data={data.getAllocationReturns()} isFilterNull={isFilterNull}/>
             </Fragment>
-          }
+          } */}
         </div>
       </div>
     )

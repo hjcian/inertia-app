@@ -2,8 +2,8 @@ import { ohlc } from './FinDataProviders/IEXCloud'
 
 
 export const providerList = [
-  { value: 'iexcloud-sandbox', label: 'IEX Cloud - Sandbox' },
-  { value: 'iexcloud', label: 'IEX Cloud' },
+  { key: 'K-IEX Cloud-Sandbox', value: 'iexcloud-sandbox', text: 'IEX Cloud - Sandbox' },
+  { key: 'K-IEX Cloud',value: 'iexcloud', text: 'IEX Cloud' },
   // { value: 'other', label: 'Other' },  
 ]
 

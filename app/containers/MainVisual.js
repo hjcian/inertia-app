@@ -7,7 +7,7 @@ import styles from './WindowTemplate.css'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  faIgloo,
+  faHome,
   faFileImport,
   faChartPie,
   faChartLine,
@@ -26,7 +26,7 @@ export default class MainVisual extends Component<Props> {
         <div className={styles.sideNav}>
         <div className={styles.sideNavItems}>
             <Link to={routes.HOME}>
-              <FontAwesomeIcon  fixedWidth icon={faIgloo} color='#e7f5ff' size='2x' />
+              <FontAwesomeIcon  fixedWidth icon={faHome} color='#e7f5ff' size='2x' />
             </Link>
           </div>
           <div className={styles.sideNavItems}>

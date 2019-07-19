@@ -1,0 +1,17 @@
+.returnsBody {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.priceFetcher {  
+  margin: 10px 0;  
+}
+
+.priceForm {
+  margin: 10px 0;  
+}
+
+.returnBars {
+  display: flex;
+}

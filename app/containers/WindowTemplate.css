@@ -23,6 +23,7 @@
 }
 
 .mainWindow {
+  padding: 15px;
   min-width: 700px;
   width: 90vw;
   height: 100vh;

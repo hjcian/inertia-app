@@ -1,23 +1,22 @@
 // @flow
 import React, { Component } from 'react'
-import { Button } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
-import styles from './Counter.css'
-import routes from '../constants/routes'
 
 import { dataStore } from '../utils/store'
+import PortfolioPie from './Charts/PortfolioPie'
 
-
-export default class Portfolio extends Component<Props> {
-  props: Props;
-  
-  render() {
-    return (
-      <div>
-        <h1>
-          Portfolio
-        </h1>        
-      </div>
-    )
-  }
+const Portfolio = () => {
+  const { data } = dataStore
+  return (
+    <div>
+      <h1>
+        Portfolio
+      </h1>
+      {
+        data &&
+        <PortfolioPie assetArray={data.getSummary()}/>
+      }
+    </div>
+  )  
 }
+
+export default Portfolio

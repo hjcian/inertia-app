@@ -1,10 +1,8 @@
 import { remote } from 'electron'
 import { Finance } from 'financejs'
 const finance = new Finance()
-// import { XIRR } from './finance'
 
 import { stockSet, bondSet } from '../constants/symbols'
-import { parse } from 'postcss';
 
 export const SymbolIdx = 0
 export const QuantityIdx = 1
@@ -14,19 +12,6 @@ export const DescriptionIdx = 4
 export const TradeDateIdx = 5
 export const AmountIdx = 8
 
-// const validActions = {
-//   action: [
-//     'other',
-//     'buy',
-//     'interest',
-//     'dividend'
-//   ],
-//   recordtype: [
-//     'financial',
-//     'trade'
-//   ]
-// }
-// [
 // "Symbol", 0  "            ",
 // "Quantity", 1  "0.00",
 // "Price", 2  "",
@@ -40,7 +25,6 @@ export const AmountIdx = 8
 // "Fee", 10  "0.00",
 // "CUSIP", 11  "         ",
 // "RecordType" 12  "Financial"
-// ]
 const getAssetType = (symbol) => {
   return stockSet.has(symbol) ? 'stock' : bondSet.has(symbol) ? 'bond' : 'unknown'
 }
@@ -54,6 +38,7 @@ class FirstradeRecord {
     this.Description = []
     this.TradeDate = []
     this.Amount = []
+    this.assetType = getAssetType(this.Symbol)
     this.currentPrice = null
     this.currentDate = null
   }
@@ -106,6 +91,52 @@ class FirstradeRecord {
     } catch (error) {
       return null
     }
+  }
+        // if (action === 'buy'){
+      //   const price = parseFloat(element[PriceIdx])
+      //   const invest = price * quantity
+      //   if (!profile.hasOwnProperty(symbol)) {            
+      //     profile[symbol] = {
+      //       invest,
+      //       quantity,
+      //       reinAmount: 0,
+      //       cost: invest,
+      //       assetType: stockSet.has(symbol) ? 'stock' : bondSet.has(symbol) ? 'bond' : 'unknown'
+      //     }          
+      //   } else {
+      //     profile[symbol].invest += invest
+      //     profile[symbol].quantity += quantity
+      //     profile[symbol].cost += invest
+      //   }
+      // } else if (action === 'other' && quantity > 0 && description.includes(' REIN ')) {
+      //   const reinAmount = Math.abs(parseFloat(element[AmountIdx]))
+      //   profile[symbol].reinAmount += reinAmount
+      //   profile[symbol].cost += reinAmount
+      // }
+  getSummary() {
+    let summary = {
+      symbol: this.Symbol,
+      assetType: this.assetType,
+      quantity: 0,
+      invest: 0,
+      reinAmount: 0,
+      cost: 0,
+    }
+    this.Action.forEach((action, idx)=>{
+      const quantity = this.Quantity[idx]
+      summary.quantity += quantity
+      const description = this.Description[idx]
+      if (action === 'buy'){
+        const invest = this.Price[idx] * quantity
+        summary.invest += invest
+        summary.cost += invest
+      } else if (action === 'other' && quantity > 0 && description.includes(' REIN ')) {
+        const amount = Math.abs(this.Amount[idx])
+        summary.reinAmount += amount
+        summary.cost += amount
+      }
+    })
+    return summary
   }
 }
 
@@ -200,6 +231,10 @@ export class FirstradeRecordContainer {
       { name: 'TOTAL', return: totalXIRR, },
     ]
   }
+  getSummary() {
+    const assetArray = Object.keys(this.container).map( symbol => this.container[symbol].getSummary() )
+    return assetArray
+  }
   async _display () {
   }
 }
@@ -231,36 +266,15 @@ export const parseCSV = (data) => {
       if (symbol.length){
         firstradeRecordContainer.add(symbol, element)
       }
-      if (action === 'buy'){
-        const price = parseFloat(element[PriceIdx])
-        const invest = price * quantity
-        if (!profile.hasOwnProperty(symbol)) {            
-          profile[symbol] = {
-            invest,
-            quantity,
-            reinAmount: 0,
-            cost: invest,
-            assetType: stockSet.has(symbol) ? 'stock' : bondSet.has(symbol) ? 'bond' : 'unknown'
-          }          
-        } else {
-          profile[symbol].invest += invest
-          profile[symbol].quantity += quantity
-          profile[symbol].cost += invest
-        }
-      } else if (action === 'other' && quantity > 0 && description.includes(' REIN ')) {
-        const reinAmount = Math.abs(parseFloat(element[AmountIdx]))
-        profile[symbol].reinAmount += reinAmount
-        profile[symbol].cost += reinAmount
-      }
     }
   })
-  const assetArray = Object.keys(profile).map( symbol => {
-    return {
-      symbol,
-      ...profile[symbol]
-    }
-  })
-  return { assetArray, firstradeRecordContainer }
+  // const assetArray = Object.keys(profile).map( symbol => {
+  //   return {
+  //     symbol,
+  //     ...profile[symbol]
+  //   }
+  // })
+  return firstradeRecordContainer
 }
 
 
