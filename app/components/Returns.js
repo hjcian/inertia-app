@@ -11,36 +11,50 @@ import styles from './Returns.css'
 
 const Returns = () => {
   const [isFilterNull, setIsFilterNull] = useState(null)
+  const [singleReturns, setSingleReturns] = useState(null)
+  const [portfolioReturns, setPortfolioReturns] = useState(null)
+  const [symbolPrices, setSymbolPrices] = useState(null) // [{symbol, price, date}, ...]
   const { data } = dataStore
-  function setCurrentPrices(priceObject, date) {
-    console.log('check priceObject:')
-    console.log(priceObject)
+  if (data && !symbolPrices) {
+    const symbols = data.getSymbols()
+    const prevSymbolPrices = data.currentPrices
+    const symbolPrices = prevSymbolPrices.length === 0 ? symbols.map( symbol => { return { symbol, price: '', date: ''} }) : prevSymbolPrices
+    setSymbolPrices(symbolPrices)
+  }
+  function updateReturns(prices) {
     if (data) {
-      data.updateCurrentPrice(priceObject, date)
+      data.updateCurrentPrice(prices)
       setIsFilterNull(true)
+      setSingleReturns(data.getDetailReturns())
+      setPortfolioReturns(data.getAllocationReturns())
     }
   }
-
+  function priceSyncher(prices) {
+    setSymbolPrices(prices)
+  }
   return (
     <div className={styles.returnsBody}>
+      <h1>
+        Annualized return
+      </h1>
       <div className={styles.priceFetcher}>
         {
           data &&
-          <PriceFetcher symbols={data.getSymbols()} />
+          <PriceFetcher symbols={data.getSymbols()} priceSyncher={priceSyncher} />
         }
       </div>
       <div className={styles.priceForm}>
         { 
-          data &&
-          <PriceForm symbols={data.getSymbols()} importCurrentPrices={setCurrentPrices}/>
+          symbolPrices &&
+          <PriceForm prices={symbolPrices} updateReturns={updateReturns}/>
         }
       </div>
       <div className={styles.returnBars}>
         {
-          data && 
+          singleReturns && portfolioReturns && 
           <Fragment>
-            <ReturnBar data={data.getDetailReturns()} isFilterNull={isFilterNull}/>
-            <ReturnBar data={data.getAllocationReturns()} isFilterNull={isFilterNull}/>
+            <ReturnBar data={singleReturns} isFilterNull={isFilterNull}/>
+            <ReturnBar data={portfolioReturns} isFilterNull={isFilterNull}/>
           </Fragment>
         }
       </div>

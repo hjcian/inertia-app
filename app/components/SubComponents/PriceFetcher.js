@@ -3,41 +3,60 @@ import { Form, Input, Label, Button } from 'semantic-ui-react'
 
 import { fetchLatestClosePrice, providerList} from '../../utils/fetcher'
 
-const PriceFetcher = ({symbols}) => {  
-    const [ provider, setProvider ] = useState(providerList[0].value)
-    const [ apikey, setApikey ] = useState('')
-    async function handleAPIKeyEmit(e) {
-      e.preventDefault()
-      const promises = symbols.map( symbol => fetchLatestClosePrice(symbol, apikey, provider) )
-      const results = await Promise.all(promises)
-      console.log('get the server results: ')
-      console.log(JSON.stringify(results, null, 4))
+export default class PriceFetcher extends Component {
+    state = {
+      provider: providerList[0].value,
+      apikey: '',
+      isLoading: false,
     }
-    function handleAPIKeyChange(e, {value}){
+    handleAPIKeyEmit = async (e) => {
       e.preventDefault()
-      setApikey(value)    
+      const { symbols, priceSyncher } = this.props
+      const { apikey, provider } = this.state
+      this.setState({isLoading: true}, async ()=> {        
+        const promises = symbols.map( symbol => fetchLatestClosePrice(symbol, apikey, provider) )
+        const results = await Promise.all(promises)
+        const ret = symbols.map( (symbol, idx) => { 
+          const { closePrice: price, date } = results[idx]
+          return { symbol, price, date } 
+        } )
+        priceSyncher(ret)
+        this.setState({isLoading: false})
+      })
     }
-    function handleChange(e, { value }) {
+    handleAPIKeyChange = (e, {value}) => {
       e.preventDefault()
-      console.log(`change: ${value}`)
-      setProvider(value)    
+      this.setState({apikey: value})
     }
-    return (
-      <Form onSubmit={handleAPIKeyEmit}>
-        <Form.Group>
-          <Form.Select            
-            search
-            scrolling
-            placeholder='Select a provider...'
-            onChange={handleChange}
-            options={providerList}
-            defaultValue={provider}
-            />
-          <Form.Input value={apikey} placeholder='apikey paste here' onChange={handleAPIKeyChange}/>
-          <Form.Button type='submit' content='Submit' />
-        </Form.Group>
-      </Form>
-    )
+    handleSelectorChange = (e, {value}) => {
+      e.preventDefault()
+      this.setState({provider: value})
+    }
+    render () {
+        const { apikey, provider, isLoading } = this.state
+        return (
+          <Form onSubmit={this.handleAPIKeyEmit}>
+          <Form.Group>
+            <Form.Select            
+              search
+              scrolling              
+              disabled={isLoading}
+              placeholder='Select a provider...'
+              options={providerList}
+              defaultValue={provider}
+              onChange={this.handleSelectorChange}              
+              />
+            <Form.Input 
+              disabled={isLoading}
+              value={apikey}               
+              placeholder='apikey paste here' 
+              onChange={this.handleAPIKeyChange}/>
+            <Form.Button 
+              loading={isLoading}
+              type='submit' 
+              content='Submit' />
+          </Form.Group>
+        </Form>
+      )
+    }
   }
-  
-  export default PriceFetcher

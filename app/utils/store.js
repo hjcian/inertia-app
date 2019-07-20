@@ -1,11 +1,10 @@
-import { parseCSV, isCSVFormatValid } from '../utils/firstrade'
-import dump from '../utils/dump.json'
-// const data = null
-const data = parseCSV(dump)
+// import { parseCSV, isCSVFormatValid } from '../utils/firstrade'
+// import dump from '../utils/dump.json'
+// const data = parseCSV(dump)
 
 export const dataStore = {
     isStored: false,
-    data: data,
+    data: null,
     refresh() {
       this.isStored = false
       this.data = null

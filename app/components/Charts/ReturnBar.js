@@ -11,7 +11,10 @@ const ReturnBar = ({data, isFilterNull}) => {
     // ]
     const filteredData = isFilterNull !== true ? data : data.filter( obj => obj.return !== null ? true : false)    
     return (
-        <BarChart width={filteredData.length * 75} height={200} data={filteredData}>
+        <BarChart 
+        width={filteredData.length * 100} 
+        height={250} 
+        data={filteredData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />

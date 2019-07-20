@@ -1,13 +1,10 @@
 // @flow
 import React, { Component, Fragment } from 'react'
-import { Link } from 'react-router-dom'
-import routes from '../constants/routes'
+import { Message } from 'semantic-ui-react'
+
 import styles from './Home.css'
 
-
 import Import from './Import'
-// import PriceForm from './SubComponents/PriceForm'
-// import ReturnBar from './Charts/ReturnBar'
 
 import { dataStore } from '../utils/store'
 
@@ -29,9 +26,6 @@ export default class Home extends Component<Props> {
 
   render() {
     const { data: containData, isStored } = dataStore
-    console.log(isStored)
-    console.log(containData)
-    
     const { data, isFilterNull } = this.state
     if (data) {
       data._display()
@@ -42,22 +36,6 @@ export default class Home extends Component<Props> {
         <h1>
           Home
         </h1>
-        <div className={styles.upper}>
-          <Import importData={this.importData}/>
-        </div>
-        <div className={styles.buttom}>
-          {/* {
-            data &&
-            <PriceForm symbols={data.getSymbols()} importCurrentPrices={this.importCurrentPrices}/>
-          }
-          {
-            data && 
-            <Fragment>
-              <ReturnBar data={data.getDetailReturns()} isFilterNull={isFilterNull}/>
-              <ReturnBar data={data.getAllocationReturns()} isFilterNull={isFilterNull}/>
-            </Fragment>
-          } */}
-        </div>
       </div>
     )
   }  

@@ -14,4 +14,5 @@
 
 .returnBars {
   display: flex;
+  flex-direction: column;
 }

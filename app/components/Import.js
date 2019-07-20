@@ -1,10 +1,6 @@
 // @flow
 import React, { Component, useState } from 'react'
 import CSVReader from 'react-csv-reader'
-import { Link } from 'react-router-dom'
-
-import routes from '../constants/routes'
-import { relativeTimeRounding } from 'moment';
 
 import { parseCSV, isCSVFormatValid } from '../utils/firstrade'
 
@@ -33,21 +29,17 @@ const Import = ({}) => {
 
   return (
     <div className={styles.container} data-tid='container'>
-      <h2>Import data</h2>
+      <h1>Import data</h1>
       <CSVReader
         cssClass={styles.csvReaderInput}
         label="Select CSV with secret Death Star statistics"
         onFileLoaded={handleParsedData}
-        // onError={this.handleDarkSideForce}
         inputId="ObiWan"
         inputStyle={{color: 'red'}}
       />
       <button onClick={_getData}>
         get data
       </button>
-      {/* {
-        assetArray && <RenderInvestPie assetArray={assetArray}/>
-      } */}
     </div>      
   )
 }

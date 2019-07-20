@@ -12,19 +12,6 @@ export const DescriptionIdx = 4
 export const TradeDateIdx = 5
 export const AmountIdx = 8
 
-// "Symbol", 0  "            ",
-// "Quantity", 1  "0.00",
-// "Price", 2  "",
-// "Action", 3  "Other",
-// "Description", 4  "Wire Funds Received            ABA-026009593 BK AMER NYC      180327422566                                                                                                                                              ",
-// "TradeDate", 5  "2018-03-27",
-// "SettledDate", 6  "2018-03-27",
-// "Interest", 7  "0.00",
-// "Amount", 8  "3972.00",
-// "Commission", 9  "0.00",
-// "Fee", 10  "0.00",
-// "CUSIP", 11  "         ",
-// "RecordType" 12  "Financial"
 const getAssetType = (symbol) => {
   return stockSet.has(symbol) ? 'stock' : bondSet.has(symbol) ? 'bond' : 'unknown'
 }
@@ -92,27 +79,6 @@ class FirstradeRecord {
       return null
     }
   }
-        // if (action === 'buy'){
-      //   const price = parseFloat(element[PriceIdx])
-      //   const invest = price * quantity
-      //   if (!profile.hasOwnProperty(symbol)) {            
-      //     profile[symbol] = {
-      //       invest,
-      //       quantity,
-      //       reinAmount: 0,
-      //       cost: invest,
-      //       assetType: stockSet.has(symbol) ? 'stock' : bondSet.has(symbol) ? 'bond' : 'unknown'
-      //     }          
-      //   } else {
-      //     profile[symbol].invest += invest
-      //     profile[symbol].quantity += quantity
-      //     profile[symbol].cost += invest
-      //   }
-      // } else if (action === 'other' && quantity > 0 && description.includes(' REIN ')) {
-      //   const reinAmount = Math.abs(parseFloat(element[AmountIdx]))
-      //   profile[symbol].reinAmount += reinAmount
-      //   profile[symbol].cost += reinAmount
-      // }
   getSummary() {
     let summary = {
       symbol: this.Symbol,
@@ -143,15 +109,13 @@ class FirstradeRecord {
 export class FirstradeRecordContainer {
   constructor() {
     this.container = {}
+    this.currentPrices = []
   }
-  updateCurrentPrice(prices, date) {
-    Object.keys(prices).forEach( symbol => {
-      let curPrice = prices[symbol]      
-      this.container[symbol].updateCurrentPrice(curPrice, date)
-    })
-    Object.keys(prices).forEach( symbol => {
-      let curPrice = prices[symbol]
-    })      
+  updateCurrentPrice(prices) {
+    this.currentPrices = prices
+    prices.forEach( ({symbol, price, date}) => {
+      this.container[symbol].updateCurrentPrice(price, new Date(date))
+    })  
   }
   getSymbols() {
     return Object.keys(this.container)
@@ -268,15 +232,8 @@ export const parseCSV = (data) => {
       }
     }
   })
-  // const assetArray = Object.keys(profile).map( symbol => {
-  //   return {
-  //     symbol,
-  //     ...profile[symbol]
-  //   }
-  // })
   return firstradeRecordContainer
 }
-
 
 export const computeTotalAmount = (data) => {
   let totalAmount = 0
