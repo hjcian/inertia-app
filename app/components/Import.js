@@ -1,13 +1,15 @@
 // @flow
 import React, { Component, useState } from 'react'
+import { Message } from 'semantic-ui-react'
+
 import CSVReader from 'react-csv-reader'
 
+import OpenLink from './SubComponents/OpenLink'
 import { parseCSV, isCSVFormatValid } from '../utils/firstrade'
-
-import styles from './Import.css'
-
 import { dataStore } from '../utils/store'
 import dump from '../utils/dump.json'
+
+import styles from './Import.css'
 
 const Import = ({}) => {
   const [isValidFormat, setFormatIsValid] = useState(null)  
@@ -26,16 +28,20 @@ const Import = ({}) => {
   function _getData() {
     handleParsedData(dump)
   }
-
   return (
-    <div className={styles.container} data-tid='container'>
-      <h1>Import data</h1>
+    <div className={styles.importBody} data-tid='container'>
+      <Message>
+        <Message.Header>Import Data</Message.Header>
+        <Message.Content>匯入歷史交易資料。目前支援的資料來源：</Message.Content>
+        <Message.List>
+          <Message.Item><OpenLink text='第一證券(Firstrade Securities Inc.)' href='https://www.firstrade.com'/></Message.Item>
+        </Message.List>
+      </Message>
       <CSVReader
         cssClass={styles.csvReaderInput}
-        label="Select CSV with secret Death Star statistics"
         onFileLoaded={handleParsedData}
         inputId="ObiWan"
-        inputStyle={{color: 'red'}}
+        inputStyle={{color: 'black'}}
       />
       <button onClick={_getData}>
         get data

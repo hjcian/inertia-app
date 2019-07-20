@@ -1,6 +1,6 @@
 // @flow
 import React, { Component, Fragment, useState } from 'react'
-import { Button } from 'semantic-ui-react'
+import { Button, Message } from 'semantic-ui-react'
 
 import { dataStore } from '../utils/store'
 
@@ -34,9 +34,10 @@ const Returns = () => {
   }
   return (
     <div className={styles.returnsBody}>
-      <h1>
-        Annualized return
-      </h1>
+      <Message>
+        <Message.Header>Annualized returns</Message.Header>
+        <Message.Content>基於歷史交易資料並取得目前報價，計算投資組合的年化投報率。</Message.Content>
+      </Message>
       <div className={styles.priceFetcher}>
         {
           data &&

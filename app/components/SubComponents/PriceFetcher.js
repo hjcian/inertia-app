@@ -1,5 +1,5 @@
 import React, { Component, Fragment, useState } from 'react'
-import { Form, Input, Label, Button } from 'semantic-ui-react'
+import { Form, Input, Label, Button, Select } from 'semantic-ui-react'
 
 import { fetchLatestClosePrice, providerList} from '../../utils/fetcher'
 
@@ -35,28 +35,29 @@ export default class PriceFetcher extends Component {
     render () {
         const { apikey, provider, isLoading } = this.state
         return (
-          <Form onSubmit={this.handleAPIKeyEmit}>
-          <Form.Group>
-            <Form.Select            
-              search
-              scrolling              
-              disabled={isLoading}
-              placeholder='Select a provider...'
-              options={providerList}
-              defaultValue={provider}
+          <Input 
+            disabled={isLoading}
+            size='mini' 
+            type='text' 
+            value={apikey}
+            placeholder='paste apikey' 
+            onChange={this.handleAPIKeyChange}
+            action
+          >
+            <input />
+            <Select 
+              search scrolling
+              options={providerList} 
+              defaultValue={provider} 
+              disabled={isLoading}                
               onChange={this.handleSelectorChange}              
-              />
-            <Form.Input 
-              disabled={isLoading}
-              value={apikey}               
-              placeholder='apikey paste here' 
-              onChange={this.handleAPIKeyChange}/>
-            <Form.Button 
-              loading={isLoading}
+            />
+            <Button 
               type='submit' 
-              content='Submit' />
-          </Form.Group>
-        </Form>
+              loading={isLoading} 
+              content='Submit' 
+              onClick={this.handleAPIKeyEmit}/>
+          </Input>
       )
     }
   }
