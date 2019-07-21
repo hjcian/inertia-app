@@ -1,9 +1,10 @@
-export const investAmount = (symbolNetValue, totalNetValue, targetRatio, assetIncrement) => {
-    const investAmount = targetRatio * (totalNetValue + assetIncrement) - symbolNetValue
-    return investAmount
+export const calcAssetIncrement = (amount, totalNetValue, targetRatio, capitalInput) => {
+  const assetInc = targetRatio * (totalNetValue + capitalInput) - amount
+  console.log(`${targetRatio} x (${totalNetValue} + ${capitalInput}) - ${amount} = ${assetInc}`)
+  return assetInc
 }
 
-export const conservativeShares = (investAmount, currentPrice) => {
-    const conservativeShares = Math.floor(investAmount / currentPrice)
-    return conservativeShares
+export const calcQuantity = (assetInc, currentPrice) => {
+  const quantity = Math.floor(assetInc / currentPrice)
+  return quantity
 }

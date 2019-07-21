@@ -1,0 +1,55 @@
+.adjustBar {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin: 8px 0;
+}
+
+.adjustBarToggle {
+  width: 7rem;
+
+}
+.adjustBarSymbol {
+  width: 5rem;
+  margin: 0 7px;
+  font-size: 2.2rem;
+}
+
+.adjustBarRatio {
+  width: 6rem;
+  margin: 0 7px;
+  font-size: 1.8rem;
+  text-align: right;
+}
+
+.adjustBarInput {
+  width: 6rem;  
+}
+
+.adjustBarQuantInc {
+  width: 5rem;  
+  margin: 0 7px;
+  text-align: right;
+  font-size: 1.8rem;
+}
+
+.adjustBarButtons {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 0 5px;
+}
+
+.showNetValue {
+  margin: 0 5px;
+  width: 7rem;
+}
+
+.showNetValueAmount {
+  font-size: 2rem;
+  text-align: right;
+}
+
+.showNetValueFormula {
+  font-size: 1.2rem;
+  text-align: right;
+}

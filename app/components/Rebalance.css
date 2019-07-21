@@ -1,0 +1,36 @@
+.rebalanceBody {
+
+}
+
+.amountOverview {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.currentAmountView {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin: 0 25px 0 0 ;
+}
+
+.capitalInputView {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin: 0 25px;
+}
+
+.leftoverView {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin: 0 25px;
+}
+
+.adjustBarGroup {
+  display: flex;
+  flex-direction: column;
+}
