@@ -111,9 +111,9 @@ export class FirstradeRecordContainer {
     this.container = {}
     this.currentPrices = []
   }
-  updateCurrentPrice(prices) {
+  updateCurrentPrice(prices, date) {
     this.currentPrices = prices
-    prices.forEach( ({symbol, price, date}) => {
+    prices.forEach( ({symbol, price}) => {
       this.container[symbol].updateCurrentPrice(price, new Date(date))
     })  
   }

@@ -13,14 +13,16 @@ export default class PriceFetcher extends Component {
       e.preventDefault()
       const { symbols, priceSyncher } = this.props
       const { apikey, provider } = this.state
+      let prevDate = null
       this.setState({isLoading: true}, async ()=> {        
         const promises = symbols.map( symbol => fetchLatestClosePrice(symbol, apikey, provider) )
         const results = await Promise.all(promises)
         const ret = symbols.map( (symbol, idx) => { 
           const { closePrice: price, date } = results[idx]
-          return { symbol, price, date } 
+          prevDate = date
+          return { symbol, price } 
         } )
-        priceSyncher(ret)
+        priceSyncher(ret, prevDate)
         this.setState({isLoading: false})
       })
     }
