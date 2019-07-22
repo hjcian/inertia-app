@@ -5,7 +5,10 @@ import {
   faDollarSign,
   faFunnelDollar,
   faHandHoldingUsd,
+  faCartArrowDown,
   faDonate,
+  faPlus,
+  faEquals,
 }
 from '@fortawesome/free-solid-svg-icons'
 
@@ -15,6 +18,7 @@ import { dataStore } from '../utils/store'
 import AdjustBar from './SubComponents/AdjustBar'
 import styles from './Rebalance.css'
 import { parse } from 'semver';
+import { bold } from 'ansi-colors';
 
 export default class Rebalance extends Component {
   state = {
@@ -91,36 +95,52 @@ export default class Rebalance extends Component {
   render () {
     const { dataArray, capitalInput, capitalInputError } = this.state
     const { editedData, total } = this.computeAndExtend(dataArray)
-    const totalAdjustedAmount = editedData.map(({adjustedAmount}) => adjustedAmount).reduce((pre, cur) => pre + cur)
+    const totalAdjustedAmount = editedData
+                .map(({adjustedAmount}) => isNaN(parseFloat(adjustedAmount)) ? 0 : adjustedAmount )
+                .reduce((pre, cur) => pre + cur)
     const leftover = total + capitalInput - totalAdjustedAmount
     console.log(JSON.stringify(editedData, null, 4))
     return (
       <div className={styles.rebalanceBody}>
         <Message>
           <Message.Header>Rebalance Simulator</Message.Header>
-          <Message.Content>為維持投資組合的比例，計算各部位應購入的金額或股數。</Message.Content>
+          <Message.Content>
+            Calculate how much quantities your should buy or sell based on your capital input.
+          </Message.Content>
         </Message>        
         <div className={styles.amountOverview}>
           <div className={styles.currentAmountView}>
-            <FontAwesomeIcon  fixedWidth icon={faDollarSign} size='lg' />
-            {formatMoney(total)}
+            <FontAwesomeIcon fixedWidth icon={faDollarSign} size='lg' />
+            <div className={styles.moneyText}>{formatMoney(total)}</div>
+          </div>
+          <div className={styles.arithmeticSign}>
+            <FontAwesomeIcon fixedWidth icon={faPlus} size='lg' />
           </div>
           <div className={styles.capitalInputView}>
-            <FontAwesomeIcon  fixedWidth icon={faHandHoldingUsd} size='lg' />
+            <FontAwesomeIcon fixedWidth icon={faHandHoldingUsd} size='lg' />
             <Input 
               value={capitalInput}
-              // error={capitalInputError}
+              error={capitalInputError}
               onChange={this.handleCapitalInputChange}
               placeholder='Capital Input' 
               size='mini'>
             </Input>
           </div>
+          <div className={styles.arithmeticSign}>
+            <FontAwesomeIcon fixedWidth icon={faEquals} size='lg' />
+          </div>
+          <div className={styles.totalAdjustedAmountView}>
+            <FontAwesomeIcon fixedWidth icon={faCartArrowDown} size='lg' />          
+            <div className={styles.moneyText}>{formatMoney(totalAdjustedAmount)}</div>
+          </div>
+          <div className={styles.arithmeticSign}>
+            <FontAwesomeIcon fixedWidth icon={faPlus} size='lg' />
+          </div>
           <div className={styles.leftoverView}>
-            <FontAwesomeIcon  fixedWidth icon={faDonate} size='lg' />
-            {formatMoney(leftover)}
+            <FontAwesomeIcon fixedWidth icon={faDonate} size='lg' />
+            <div className={styles.moneyText}>{formatMoney(leftover)}</div>
           </div>
         </div>
-
         <div className={styles.adjustBarGroup}>
           {editedData.map( (attrs, idx) => {
             return (<AdjustBar 
@@ -156,7 +176,7 @@ export default class Rebalance extends Component {
     if (parsed) {
       this.setState({ capitalInput: parsed, capitalInputError:false })
     } else {
-      this.setState({ capitalInputError: true})
+      this.setState({ capitalInput: '', capitalInputError: true})
     }
   }
 }

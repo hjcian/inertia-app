@@ -2,6 +2,10 @@
 
 }
 
+.arithmeticSign {
+  display: flex;
+}
+
 .amountOverview {
   display: flex;
   justify-content: left;
@@ -16,7 +20,21 @@
   margin: 0 25px 0 0 ;
 }
 
+.moneyText {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin: 0 10px;
+}
+
 .capitalInputView {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin: 0 25px;
+}
+
+.totalAdjustedAmountView {
   display: flex;
   justify-content: left;
   align-items: center;
