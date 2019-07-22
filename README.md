@@ -11,7 +11,7 @@
 
 ## Bug
 1. 再平衡工具
-    - toggole off 後 leftover 沒有正常變，怪怪的
+    - toggole off 後 leftover 沒有有正常變，算式正確，但不應該出現value overflow
 
 ## Improvements
 1. date picker for calculate returns
