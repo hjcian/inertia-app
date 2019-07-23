@@ -3,7 +3,6 @@ import { Input, Message, Checkbox, Label, Button, Icon } from 'semantic-ui-react
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faDollarSign,
-  faFunnelDollar,
   faHandHoldingUsd,
   faCartArrowDown,
   faDonate,
@@ -19,6 +18,8 @@ import AdjustBar from './SubComponents/AdjustBar'
 import styles from './Rebalance.css'
 import { parse } from 'semver';
 import { bold } from 'ansi-colors';
+
+
 
 export default class Rebalance extends Component {
   state = {
@@ -157,6 +158,8 @@ export default class Rebalance extends Component {
               {...attrs} />)
             })}
         </div>
+
+
         {
           sumTargetRatio > 100 && 
           <div className={styles.inputErrorMsg}> 

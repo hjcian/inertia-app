@@ -63,6 +63,7 @@ yarn package
 1. 再次匯入檔案時彈info(詢問是否覆蓋既有資料)
 1. 遠端取得資料失敗時彈info(檢查網路連線、換個後端、或改手動輸入)
 1. side navigation需要有文字
+1. program icon
 
 # Contributors
 - ***Leo Lee***

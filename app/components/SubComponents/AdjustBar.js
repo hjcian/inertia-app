@@ -1,9 +1,42 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Input, Message, Checkbox, Label, Button, Icon } from 'semantic-ui-react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faPlusSquare,
+  faMinusSquare,
+  faAsterisk,
+}
 
+from '@fortawesome/free-solid-svg-icons'
 import styles from './AdjustBar.css'
 
 const RATIO_STEP = 5
+
+const BuyOrSellFormatter = ({number}) => {
+  const obj = number === 0 ? 
+      {
+        icon: faAsterisk,
+        color: '#adb5bd',
+        size: 'lg',
+      } : (number > 0 ? 
+      {
+        icon: faPlusSquare,
+        color: '#2b8a3e',
+        size: 'lg',
+      }: 
+      {
+        icon: faMinusSquare,
+        color: '#c92a2a',
+        size: 'lg',
+      })
+  return (
+    <Fragment>
+      <FontAwesomeIcon fixedWidth {...obj} />
+      {Math.abs(number)}
+    </Fragment>
+  )
+}
+
 
 const AdjustBar = ( {
     symbol, quantity, price, amount, ratio, targetRatio, checked, isExceed100,
@@ -64,7 +97,7 @@ const AdjustBar = ( {
           </Input>
         </div>
         <div className={styles.adjustBarQuantInc}>
-            {quantityIncrement}
+          <BuyOrSellFormatter number={quantityIncrement}/>
         </div>
         <div className={styles.showNetValue}>
           <div className={styles.showNetValueAmount}> ${adjustedAmount} </div>

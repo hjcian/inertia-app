@@ -28,8 +28,10 @@
 }
 
 .adjustBarQuantInc {
-  width: 5rem;  
-  margin: 0 7px;
+  display: flex;
+  justify-content: space-between;
+  width: 5.5rem;
+  margin: 0 15px;
   text-align: right;
   font-size: 1.8rem;
 }
