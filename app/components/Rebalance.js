@@ -96,10 +96,14 @@ export default class Rebalance extends Component {
     const { dataArray, capitalInput, capitalInputError } = this.state
     const { editedData, total } = this.computeAndExtend(dataArray)
     const totalAdjustedAmount = editedData
-                .map(({adjustedAmount}) => adjustedAmount )
-                .reduce((pre, cur) => pre + cur)
+                .map(({adjustedAmount}) => parseFloat(adjustedAmount) )
+                .reduce((pre, cur) => pre + cur)                
     const leftover = total + capitalInput - totalAdjustedAmount
+    const sumTargetRatio = editedData
+                .map(({targetRatio}) => parseFloat(targetRatio) )
+                .reduce((pre, cur) => pre + cur)                
     console.log(JSON.stringify(editedData, null, 4))
+    console.log(sumTargetRatio)
     return (
       <div className={styles.rebalanceBody}>
         <Message>
@@ -149,9 +153,22 @@ export default class Rebalance extends Component {
               adjustTargetRatio={this.adjustTargetRatio}
               capitalInput={capitalInput}
               totalNetValue={total}
+              isExceed100={sumTargetRatio > 100 ? true: false}
               {...attrs} />)
             })}
         </div>
+        {
+          sumTargetRatio > 100 && 
+          <div className={styles.inputErrorMsg}> 
+            <Message 
+            warning
+            icon='warning sign'
+            header='Summation of ratio is exceed 100%'
+            content={`Your summation of ratio is ${sumTargetRatio}%, the computed results maybe incorrect.`}
+            >
+            </Message>
+          </div>
+        }
       </div>
     )
   }

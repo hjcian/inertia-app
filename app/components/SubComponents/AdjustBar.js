@@ -6,7 +6,8 @@ import styles from './AdjustBar.css'
 const RATIO_STEP = 5
 
 const AdjustBar = ( {
-    symbol, quantity, price, amount, ratio, targetRatio, checked, quantityIncrement, adjustedQuantity, adjustedAmount, 
+    symbol, quantity, price, amount, ratio, targetRatio, checked, isExceed100,
+    quantityIncrement, adjustedQuantity, adjustedAmount, 
     toggleChecker, adjustTargetRatio} ) => {  
 
   const handleButtonClick = (e, {symbol, value, name}) => {
@@ -56,6 +57,7 @@ const AdjustBar = ( {
             size='small' 
             symbol={symbol}
             onChange={handleInputChange}
+            error={isExceed100}
             >
             <Icon name='percent'/>
             <input />

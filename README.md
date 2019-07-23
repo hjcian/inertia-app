@@ -59,7 +59,6 @@ yarn package
 ## Improvements
 1. 將 portfolio pie chart 與 import 頁面合併
 1. 調整年化投報率長條圖的顏色(+綠-紅)與上Y軸座標軸標籤
-1. 再平衡時即時計算是否total > 100%，在適當的位置放 error message 
 1. 匯入失敗時彈warning(格式不預期)
 1. 再次匯入檔案時彈info(詢問是否覆蓋既有資料)
 1. 遠端取得資料失敗時彈info(檢查網路連線、換個後端、或改手動輸入)

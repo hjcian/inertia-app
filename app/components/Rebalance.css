@@ -52,3 +52,7 @@
   display: flex;
   flex-direction: column;
 }
+
+.inputErrorMsg{
+  width: 45rem;
+}
