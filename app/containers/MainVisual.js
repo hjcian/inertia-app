@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import routes from '../constants/routes'
 import { Link } from 'react-router-dom'
 
-import styles from './WindowTemplate.css'
+import styles from './MainVisual.css'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -21,34 +21,49 @@ export default class MainVisual extends Component<Props> {
 
   render() {
     const { mainWin } = this.props
+    const sideNav = [
+      {
+        url: routes.HOME,
+        icon: faHome,
+        text: "Home"
+      },
+      {
+        url: routes.IMPORT,
+        icon: faFileImport,
+        text: "Import Data"
+      },
+      {
+        url: routes.Portfolio,
+        icon: faChartPie,
+        text: "Portfolio Overview"
+      },
+      {
+        url: routes.Returns,
+        icon: faChartLine,
+        text: "Calculate Returns"
+      },
+      {
+        url: routes.Rebalance,
+        icon: faBalanceScale,
+        text: "Rebalancing"
+      },
+    ]
+
     return (
       <div className={styles.entireWindow}>
         <div className={styles.sideNav}>
-        <div className={styles.sideNavItems}>
-            <Link to={routes.HOME}>
-              <FontAwesomeIcon  fixedWidth icon={faHome} color='#e7f5ff' size='2x' />
-            </Link>
-          </div>
-          <div className={styles.sideNavItems}>
-            <Link to={routes.IMPORT}>
-              <FontAwesomeIcon  fixedWidth icon={faFileImport} color='#e7f5ff' size='2x' />
-            </Link>
-          </div>
-          <div className={styles.sideNavItems}>
-            <Link to={routes.Portfolio}>
-              <FontAwesomeIcon fixedWidth icon={faChartPie} color='#e7f5ff' size='2x' />
-            </Link>
-          </div>
-          <div className={styles.sideNavItems}>
-            <Link to={routes.Returns}>
-              <FontAwesomeIcon fixedWidth icon={faChartLine} color='#e7f5ff' size='2x' />
-            </Link>
-          </div>
-          <div className={styles.sideNavItems}>
-            <Link to={routes.Rebalance}>
-              <FontAwesomeIcon fixedWidth icon={faBalanceScale} color='#e7f5ff' size='2x' />
-            </Link>
-          </div>
+          {
+            sideNav.map( ({url, icon, text}) => {
+              return (
+                <div className={styles.sideNavItems}>
+                  <Link to={url}>
+                    <FontAwesomeIcon  fixedWidth icon={icon} color='#e7f5ff' size='lg' />
+                    {text}
+                  </Link>
+                </div>
+              )
+            })
+          }          
         </div>
         <div className={styles.mainWindow}>
           {mainWin}
