@@ -83,10 +83,10 @@ export default class Rebalance extends Component {
       return { symbol, ...this.state.dataDict[symbol], 
         amount: amounts[idx], 
         ratio: checked ? amounts[idx]/total : 0,
-        targetRatio: tempTargetRatio,
-        quantityIncrement,
-        adjustedQuantity,
-        adjustedAmount
+        targetRatio: checked ? tempTargetRatio: 0,
+        quantityIncrement: checked ? quantityIncrement: 0,
+        adjustedQuantity: checked ? adjustedQuantity: 0,
+        adjustedAmount: checked ? adjustedAmount: 0,
       }
     })
     return { editedData, total }
@@ -96,7 +96,7 @@ export default class Rebalance extends Component {
     const { dataArray, capitalInput, capitalInputError } = this.state
     const { editedData, total } = this.computeAndExtend(dataArray)
     const totalAdjustedAmount = editedData
-                .map(({adjustedAmount}) => isNaN(parseFloat(adjustedAmount)) ? 0 : adjustedAmount )
+                .map(({adjustedAmount}) => adjustedAmount )
                 .reduce((pre, cur) => pre + cur)
     const leftover = total + capitalInput - totalAdjustedAmount
     console.log(JSON.stringify(editedData, null, 4))
