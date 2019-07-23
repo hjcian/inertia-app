@@ -1,51 +1,55 @@
 .rebalanceBody {
-
+  display: flex;
+  flex-direction: column;
 }
 
 .arithmeticSign {
   display: flex;
+  margin: 0 10px;
 }
 
 .amountOverview {
   display: flex;
   justify-content: left;
   align-items: center;
-  margin: 5px 0;
+  margin: 0 0 20px 0;
 }
 
 .currentAmountView {
   display: flex;
   justify-content: left;
   align-items: center;
-  margin: 0 25px 0 0 ;
 }
 
 .moneyText {
   display: flex;
   justify-content: left;
   align-items: center;
-  margin: 0 10px;
+  margin: 0 0 0 5px;
 }
 
 .capitalInputView {
   display: flex;
   justify-content: left;
   align-items: center;
-  margin: 0 25px;
+}
+
+.capitalInput {
+  width: 7rem;
+  border-bottom-style: groove;
+  margin: 0 0 0 5px;  
 }
 
 .totalAdjustedAmountView {
   display: flex;
   justify-content: left;
   align-items: center;
-  margin: 0 25px;
 }
 
 .leftoverView {
   display: flex;
   justify-content: left;
   align-items: center;
-  margin: 0 25px;
 }
 
 .adjustBarGroup {
@@ -54,5 +58,5 @@
 }
 
 .inputErrorMsg{
-  width: 45rem;
+  width: 40rem;
 }

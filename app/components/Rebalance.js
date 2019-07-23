@@ -123,13 +123,17 @@ export default class Rebalance extends Component {
           </div>
           <div className={styles.capitalInputView}>
             <FontAwesomeIcon fixedWidth icon={faHandHoldingUsd} size='lg' />
-            <Input 
-              value={capitalInput}
-              error={capitalInputError}
-              onChange={this.handleCapitalInputChange}
-              placeholder='Capital Input' 
-              size='mini'>
-            </Input>
+            <div className={styles.capitalInput}>
+              <Input 
+                value={capitalInput}
+                error={capitalInputError}
+                onChange={this.handleCapitalInputChange}
+                placeholder='Capital Input' 
+                size='mini' 
+                transparent
+                fluid
+                />            
+            </div>
           </div>
           <div className={styles.arithmeticSign}>
             <FontAwesomeIcon fixedWidth icon={faEquals} size='lg' />
@@ -158,8 +162,18 @@ export default class Rebalance extends Component {
               {...attrs} />)
             })}
         </div>
-
-
+        {
+          capitalInputError && 
+          <div className={styles.inputErrorMsg}> 
+            <Message 
+            warning
+            icon='warning sign'
+            header='Capital Input Empty'
+            size='mini'
+            >
+            </Message>
+          </div>
+        }
         {
           sumTargetRatio > 100 && 
           <div className={styles.inputErrorMsg}> 
@@ -168,6 +182,7 @@ export default class Rebalance extends Component {
             icon='warning sign'
             header='Summation of ratio is exceed 100%'
             content={`Your summation of ratio is ${sumTargetRatio}%, the computed results maybe incorrect.`}
+            size='mini'
             >
             </Message>
           </div>
