@@ -1,23 +1,15 @@
 // @flow
-import React, { Component } from 'react';
-import Import from '../components/Import';
+import React, { Component } from 'react'
 
+import Import from '../components/Import'
+import routes from '../constants/routes'
 import MainVisual from './MainVisual'
 
-type Props = {};
 
-export default class ImportPage extends Component<Props> {
-  props: Props;
-
+export default class ImportPage extends Component {
   render() {
     return (
-      <MainVisual mainWin={<Import />} />
+      <MainVisual mainWin={<Import />} referer={routes.Import}/>
     )
   }
 }
-
-
-// import { connect } from 'react-redux'
-
-// export default connect(  
-// )(Import)

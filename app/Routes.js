@@ -11,11 +11,11 @@ import RebalancePage from './containers/RebalancePage'
 export default () => (
   <App>
     <Switch>
-      <Route path={routes.IMPORT} component={ImportPage} />
+      <Route path={routes.Import} component={ImportPage} />
       <Route path={routes.Portfolio} component={PortfolioPage} />
       <Route path={routes.Returns} component={ReturnsPage} />
       <Route path={routes.Rebalance} component={RebalancePage} />
-      <Route path={routes.HOME} component={HomePage} />
+      <Route path={routes.Home} component={HomePage} />
     </Switch>
   </App>
 )

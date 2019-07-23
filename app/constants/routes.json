@@ -1,6 +1,6 @@
 {
-  "HOME": "/",
-  "IMPORT": "/import",
+  "Home": "/",
+  "Import": "/import",
   "Portfolio": "/portfolio",
   "Returns": "/returns",
   "Rebalance": "/rebalance"

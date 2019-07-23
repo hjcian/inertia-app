@@ -1,17 +1,14 @@
 // @flow
-import React, { Component } from 'react';
-import Portfolio from '../components/Portfolio';
+import React, { Component } from 'react'
 
+import Portfolio from '../components/Portfolio'
+import routes from '../constants/routes'
 import MainVisual from './MainVisual'
 
-type Props = {};
-
-export default class PortfolioPage extends Component<Props> {
-  props: Props;
-
+export default class PortfolioPage extends Component {
   render() {
     return (
-      <MainVisual mainWin={<Portfolio />} />
+      <MainVisual mainWin={<Portfolio />} referer={routes.Portfolio} />
     )
   }
 }

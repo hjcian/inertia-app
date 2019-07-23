@@ -8,24 +8,40 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 100px;
-  width: 15vw;
+  width: 18rem;
   height: 100vh;
   background: #0b7285;
   padding: 10px 0 0 0;
 }
 
-.sideNavItems {
-  margin: 15px;  
-  /* opacity: 0.75; */
-  /* cursor: pointer; */
+.sideNavItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 12rem;
+  margin: 15px 0;
+}
 
+.sideNavItemClicked {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 12rem;
+  margin: 15px 0;
+  border-bottom-style: groove;  
+}
+
+.sideNavIcon {
+  margin: 0 8px 0 0;
+}
+
+.sideNavText {
+  color: #e7e6ef;
 }
 
 .mainWindow {
   padding: 15px;
-  min-width: 700px;
-  width: 90vw;
+  width: 100vw;
   height: 100vh;
   background: #e7e6ef;
 }

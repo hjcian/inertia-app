@@ -1,17 +1,15 @@
 // @flow
-import React, { Component } from 'react';
-import Rebalance from '../components/Rebalance';
+import React, { Component } from 'react'
 
+import Rebalance from '../components/Rebalance'
+import routes from '../constants/routes'
 import MainVisual from './MainVisual'
 
-type Props = {};
 
-export default class RebalancePage extends Component<Props> {
-  props: Props;
-
+export default class RebalancePage extends Component {
   render() {
     return (
-      <MainVisual mainWin={<Rebalance />} />
+      <MainVisual mainWin={<Rebalance />} referer={routes.Rebalance} />
     )
   }
 }

@@ -1,17 +1,14 @@
 // @flow
-import React, { Component } from 'react';
-import Home from '../components/Home';
+import React, { Component } from 'react'
 
+import Home from '../components/Home'
+import routes from '../constants/routes'
 import MainVisual from './MainVisual'
 
-type Props = {};
-
-export default class HomePage extends Component<Props> {
-  props: Props;
-
+export default class HomePage extends Component {
   render() {
     return (
-      <MainVisual mainWin={<Home />} />
+      <MainVisual mainWin={<Home />} referer={routes.Home}/>
     )
   }
 }
