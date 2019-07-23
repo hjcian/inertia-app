@@ -38,8 +38,12 @@ class FirstradeRecord {
     this.TradeDate = [...this.TradeDate, date]
     this.Amount = [...this.Amount, parseFloat(recordArray[AmountIdx])]
   }
-  getInvestHistory() {
+  getQuantity() {
     const totalQuantity = this.Quantity.reduce((a, b) => a + b)
+    return totalQuantity
+  }
+  getInvestHistory() {
+    const totalQuantity = this.getQuantity()
     let amounts = []
     let dates = []
     for (let i = 0; i < this.Quantity.length; ++i) {
@@ -110,6 +114,14 @@ export class FirstradeRecordContainer {
   constructor() {
     this.container = {}
     this.currentPrices = []
+  }
+  getQuantity(symbol){
+    let normSymbol = symbol.trim().toUpperCase()
+    if (this.container.hasOwnProperty(normSymbol)) {
+      return this.container[normSymbol].getQuantity()
+    } else {
+      return -1
+    }
   }
   updateCurrentPrice(prices, date) {
     this.currentPrices = prices

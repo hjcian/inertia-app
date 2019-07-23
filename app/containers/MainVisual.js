@@ -46,7 +46,6 @@ const sideNav = [
 export default class MainVisual extends Component {
   render() {
     const { mainWin, referer } = this.props
-    console.log(referer)
     const refererSideNav = sideNav.map((obj)=>{
       return {...obj, clicked: obj.url === referer ? true: false}
     })

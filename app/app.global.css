@@ -9,7 +9,7 @@ body {
   width: 100vw;
   margin: 0;
   padding: 0;
-  /* overflow-x: auto; */
+  overflow-x: auto;
   /* overflow-y: auto; */
   font-family: 'Inconsolata', 'Source Code Pro', monospace, Arial, Helvetica, sans-serif;
   font-size: 20px;

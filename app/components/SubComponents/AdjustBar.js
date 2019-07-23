@@ -9,6 +9,7 @@ import {
 
 from '@fortawesome/free-solid-svg-icons'
 import styles from './AdjustBar.css'
+import { formatMoney } from '../../utils/stringFormatter'
 
 const RATIO_STEP = 5
 
@@ -66,8 +67,8 @@ const AdjustBar = ( {
         </Checkbox>
         <div className={styles.adjustBarSymbol}>{symbol}</div>
         <div className={styles.showNetValue}>
-          <div className={styles.showNetValueAmount}> ${amount} </div>
-          <div className={styles.showNetValueFormula}> {quantity}x${price} </div>
+          <div className={styles.showNetValueAmount}> ${formatMoney(amount, 1)} </div>
+          <div className={styles.showNetValueFormula}> {formatMoney(quantity, 1)}x${price} </div>
         </div>
         <div className={styles.adjustBarRatio}>
           <div>{Math.round(ratio * 100 *10)/10}</div>
@@ -100,8 +101,8 @@ const AdjustBar = ( {
           <BuyOrSellFormatter number={quantityIncrement}/>
         </div>
         <div className={styles.showNetValue}>
-          <div className={styles.showNetValueAmount}> ${adjustedAmount} </div>
-          <div className={styles.showNetValueFormula}> {adjustedQuantity}x${price} </div>
+          <div className={styles.showNetValueAmount}> ${formatMoney(adjustedAmount, 1)} </div>
+          <div className={styles.showNetValueFormula}> {formatMoney(adjustedQuantity, 1)}x${price} </div>
         </div>
     </div>
   )

@@ -19,37 +19,30 @@ import styles from './Rebalance.css'
 import { parse } from 'semver';
 import { bold } from 'ansi-colors';
 
-
+const initDataDict = () => {
+  const { data } = dataStore
+  if (data) {
+    let dataDict = {}
+    const symbolArray = data.getSymbols()
+    data.currentPrices.forEach(({symbol, price})=> {
+      dataDict[symbol] = {
+        price,
+        quantity: data.getQuantity(symbol),
+        checked: true,
+        targetRatio: null,
+      }
+    })
+    return dataDict
+  }
+  return null
+}
 
 export default class Rebalance extends Component {
   state = {
     capitalInput: 3000,
     capitalInputError: true,
-    dataArray: [
-      "VT",
-      "BWX",
-      "BND",
-    ],
-    dataDict: {
-      "VT": {
-        price: 50,
-        quantity: 100,
-        checked: true,
-        targetRatio: null,
-      },
-      "BWX": {
-        price: 20,
-        quantity: 40,
-        checked: true,
-        targetRatio: null,
-      },
-      "BND": {
-        price: 40,
-        quantity: 30,
-        checked: true,
-        targetRatio: null,
-      }
-    }
+    dataArray: dataStore.data ? dataStore.data.getSymbols() : [],
+    dataDict: initDataDict(),
   }
   _getAmountsAndTotal (dataArray) {
     let total = 0
@@ -73,38 +66,44 @@ export default class Rebalance extends Component {
       return {quantityIncrement, adjustedQuantity, adjustedAmount}
     }
   }
-  computeAndExtend (dataArray) {
-    const {total, amounts} = this._getAmountsAndTotal(dataArray)
-    const editedData = dataArray.map( (symbol, idx) => {
-      const { checked, targetRatio, price, quantity } = this.state.dataDict[symbol]
-      const { capitalInput } = this.state
-      const amount = amounts[idx]
-      const tempTargetRatio = checked ? (targetRatio === null ? Math.round(amount/total*100) : targetRatio) : (targetRatio === null ? '-' : targetRatio)
-      const {quantityIncrement, adjustedQuantity, adjustedAmount} = this._adjustQuantityAndAmount(amount, total, quantity, price, tempTargetRatio, capitalInput)
-      return { symbol, ...this.state.dataDict[symbol], 
-        amount: amounts[idx], 
-        ratio: checked ? amounts[idx]/total : 0,
-        targetRatio: checked ? tempTargetRatio: 0,
-        quantityIncrement: checked ? quantityIncrement: 0,
-        adjustedQuantity: checked ? adjustedQuantity: 0,
-        adjustedAmount: checked ? adjustedAmount: 0,
-      }
-    })
-    return { editedData, total }
+  computeAndExtend () {
+    const { dataArray, dataDict, capitalInput } = this.state
+    if (dataDict) {
+      const {total, amounts} = this._getAmountsAndTotal(dataArray)
+      const editedData = dataArray.map( (symbol, idx) => {
+        const { checked, targetRatio, price, quantity } = dataDict[symbol]
+        const amount = amounts[idx]
+        const tempTargetRatio = checked ? (targetRatio === null ? Math.round(amount/total*100) : targetRatio) : (targetRatio === null ? '-' : targetRatio)
+        const {quantityIncrement, adjustedQuantity, adjustedAmount} = this._adjustQuantityAndAmount(amount, total, quantity, price, tempTargetRatio, capitalInput)
+        return { symbol, ...dataDict[symbol], 
+          amount: amounts[idx], 
+          ratio: checked ? amounts[idx]/total : 0,
+          targetRatio: checked ? tempTargetRatio: 0,
+          quantityIncrement: checked ? quantityIncrement: 0,
+          adjustedQuantity: checked ? adjustedQuantity: 0,
+          adjustedAmount: checked ? adjustedAmount: 0,
+        }
+      })
+      return { editedData, total }
+    } else {
+      // data not ready
+      return { editedData: [], total: 0 }
+    }
   }
   
   render () {
-    const { dataArray, capitalInput, capitalInputError } = this.state
-    const { editedData, total } = this.computeAndExtend(dataArray)
+    const { capitalInput, capitalInputError } = this.state
+    const { editedData, total } = this.computeAndExtend()
     const totalAdjustedAmount = editedData
                 .map(({adjustedAmount}) => parseFloat(adjustedAmount) )
-                .reduce((pre, cur) => pre + cur)                
+                .reduce((pre, cur) => pre + cur, 0)
     const leftover = total + capitalInput - totalAdjustedAmount
     const sumTargetRatio = editedData
                 .map(({targetRatio}) => parseFloat(targetRatio) )
-                .reduce((pre, cur) => pre + cur)                
+                .reduce((pre, cur) => pre + cur, 0)
     console.log(JSON.stringify(editedData, null, 4))
     console.log(sumTargetRatio)
+    initDataDict()
     return (
       <div className={styles.rebalanceBody}>
         <Message>

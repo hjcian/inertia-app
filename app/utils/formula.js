@@ -1,6 +1,5 @@
 export const calcAssetIncrement = (amount, totalNetValue, targetRatio, capitalInput) => {
   const assetInc = targetRatio * (totalNetValue + capitalInput) - amount
-  console.log(`${targetRatio} x (${totalNetValue} + ${capitalInput}) - ${amount} = ${assetInc}`)
   return assetInc
 }
 
