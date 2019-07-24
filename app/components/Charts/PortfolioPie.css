@@ -1,0 +1,8 @@
+.pieCharts{
+    display: flex;
+}
+
+.tooltipMsg {
+    background: white;
+    padding: 1.0rem;
+}

@@ -47,7 +47,9 @@ const Import = ({}) => {
       </button>
       {
         data &&
-        <PortfolioPie assetArray={data.getSummary()}/>
+        <PortfolioPie           
+          assetArray={data.getSummary()}
+          />
       }
     </div>      
   )
