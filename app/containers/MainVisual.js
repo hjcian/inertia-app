@@ -26,12 +26,7 @@ const sideNav = [
     url: routes.Import,
     icon: faFileImport,
     text: "Importing"
-  },
-  {
-    url: routes.Portfolio,
-    icon: faChartPie,
-    text: "Portfolio"
-  },
+  },  
   {
     url: routes.Returns,
     icon: faChartLine,
@@ -56,6 +51,7 @@ export default class MainVisual extends Component {
             refererSideNav.map( ({url, icon, text, clicked}, idx) => {
               return (
                 <Link 
+                  key={idx}
                   className={clicked ? styles.sideNavItemClicked: styles.sideNavItem} 
                   to={url}>
                   <div className={styles.sideNavIcon}>

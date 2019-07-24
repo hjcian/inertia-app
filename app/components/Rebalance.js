@@ -48,7 +48,7 @@ export default class Rebalance extends Component {
     let total = 0
     let amounts = []
     dataArray.forEach( (symbol) => {
-      const { price, quantity, checked } = this.state.dataDict[symbol]
+      const { price, quantity, checked } = this.state.dataDict[symbol] || {}
       const amount = price * quantity
       total += checked ? amount : 0
       amounts = [...amounts, amount]
@@ -71,7 +71,7 @@ export default class Rebalance extends Component {
     if (dataDict) {
       const {total, amounts} = this._getAmountsAndTotal(dataArray)
       const editedData = dataArray.map( (symbol, idx) => {
-        const { checked, targetRatio, price, quantity } = dataDict[symbol]
+        const { checked, targetRatio, price, quantity } = dataDict[symbol] || {}
         const amount = amounts[idx]
         const tempTargetRatio = checked ? (targetRatio === null ? Math.round(amount/total*100) : targetRatio) : (targetRatio === null ? '-' : targetRatio)
         const {quantityIncrement, adjustedQuantity, adjustedAmount} = this._adjustQuantityAndAmount(amount, total, quantity, price, tempTargetRatio, capitalInput)

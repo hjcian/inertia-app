@@ -1,9 +1,9 @@
 // @flow
 import React, { Component, useState } from 'react'
 import { Message } from 'semantic-ui-react'
-
 import CSVReader from 'react-csv-reader'
 
+import PortfolioPie from './Charts/PortfolioPie'
 import OpenLink from './SubComponents/OpenLink'
 import { parseCSV, isCSVFormatValid } from '../utils/firstrade'
 import { dataStore } from '../utils/store'
@@ -15,12 +15,10 @@ const Import = ({}) => {
   const [isValidFormat, setFormatIsValid] = useState(null)  
   function handleParsedData(data) {
     if ( !isCSVFormatValid(data) ){
-      console.log("invalid format")
       setFormatIsValid(false)      
     }
     else {
       setFormatIsValid(true)
-      console.log("valid format")
       const firstradeRecordContainer = parseCSV(data)
       dataStore.save(firstradeRecordContainer)
     }
@@ -28,6 +26,7 @@ const Import = ({}) => {
   function _getData() {
     handleParsedData(dump)
   }
+  const { data } = dataStore
   return (
     <div className={styles.importBody} data-tid='container'>
       <Message>
@@ -46,6 +45,10 @@ const Import = ({}) => {
       <button onClick={_getData}>
         get data
       </button>
+      {
+        data &&
+        <PortfolioPie assetArray={data.getSummary()}/>
+      }
     </div>      
   )
 }

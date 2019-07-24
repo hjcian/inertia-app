@@ -54,7 +54,6 @@ yarn package
 1. 記憶前次設定(需要儲存資料到local fodler)
 
 ## Improvements
-1. 將 portfolio pie chart 與 import 頁面合併
 1. 調整年化投報率長條圖的顏色(+綠-紅)與上Y軸座標軸標籤
 1. 匯入失敗時彈warning(格式不預期)
 1. 再次匯入檔案時彈info(詢問是否覆蓋既有資料)
