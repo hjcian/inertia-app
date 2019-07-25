@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar } from 'recharts'
+import { BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar, Cell } from 'recharts'
 import { transpileModule } from 'typescript';
 
 const ReturnBar = ({data, isFilterNull}) => {    
@@ -17,10 +17,18 @@ const ReturnBar = ({data, isFilterNull}) => {
         data={filteredData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
-          <YAxis />
+          <YAxis unit='%' />
           <Tooltip />
-          <Legend />
-          <Bar dataKey="return" fill="#8884d8" />        
+          <Bar dataKey="return">
+            {
+              filteredData.map((entry, index) => {
+                const color = entry.return >= 0 ? '#0b7285' : '#ff8787'
+                return (                
+                  <Cell key={`cell-${index}`} fill={color}/>
+                )
+              })
+            }
+          </Bar>
         </BarChart>
     )
 }

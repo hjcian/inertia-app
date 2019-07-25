@@ -1,7 +1,7 @@
 // @flow
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment, useState }  from 'react'
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, LabelList } from 'recharts'
-import { PieChart, Pie, Legend, Cell } from 'recharts'
+import { PieChart, Pie, Legend, Cell, Sector } from 'recharts'
 
 import { formatMoney } from '../../utils/stringFormatter'
 import styles from './PortfolioPie.css'
@@ -46,7 +46,25 @@ const Blue = [
   // '#1864ab',
 ].reverse()
 
-function CustomTooltip ({ payload, active, assetMeta}) {  
+const renderActiveShape = (props) => {
+  const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
+    fill, payload, percent, value } = props
+  return (
+    <g>
+      <Sector
+        cx={cx}
+        cy={cy}
+        innerRadius={innerRadius}
+        outerRadius={outerRadius+15}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        fill={fill}
+      />
+    </g>
+  )
+}
+
+const CustomTooltip = ({ payload, active, assetMeta}) => {
   if (active) {
     const { name } = payload[0]
     const { quantity, invest, reinAmount, cost } = assetMeta[name]
@@ -92,7 +110,8 @@ const PortfolioPie = ({assetArray}) => {
   //       "cost": 10372.83
   //   },
   // ]
-  
+  const [activeIndexA, setActiveIndexA] = useState(null)
+  const [activeIndexB, setActiveIndexB] = useState(null)
   const getTotalCost = (assetArray) => {
     return assetArray.map((props) => {
         const { symbol, cost } = props
@@ -126,12 +145,16 @@ const PortfolioPie = ({assetArray}) => {
   const colors = totalCosts.length > 10 ? Cyan : Blue.concat(Cyan)
   return (
     <div className={styles.pieCharts}>
-      <PieChart width={300} height={300} >
+      <PieChart width={400} height={300} >
         <Tooltip content={<CustomTooltip assetMeta={assetMeta}/>}/>
         <Legend />
         <Pie data={totalCosts} 
           dataKey="value" nameKey="name" 
           cx="50%" cy="50%" 
+          activeIndex={activeIndexA}
+          activeShape={renderActiveShape} 
+          onMouseEnter={(data, index)=>{ setActiveIndexA(index) }}
+          onMouseLeave={(data, index)=>{ setActiveIndexA(null) }}
           > 
           {
             totalCosts.map((entry, index) => (
@@ -140,12 +163,16 @@ const PortfolioPie = ({assetArray}) => {
           }
         </Pie>
       </PieChart>
-      <PieChart width={300} height={300} >
+      <PieChart width={400} height={300} >
         <Tooltip content={<SummaryTooltip />}/>
         <Legend />
         <Pie data={stockBondRatio} 
           dataKey="value" nameKey="name" 
           cx="50%" cy="50%" 
+          activeIndex={activeIndexB}
+          activeShape={renderActiveShape} 
+          onMouseEnter={(data, index)=>{ setActiveIndexB(index) }}
+          onMouseLeave={(data, index)=>{ setActiveIndexB(null) }}
           > 
           {
             stockBondRatio.map((entry, index) => (

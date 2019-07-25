@@ -3,7 +3,6 @@
   flex-direction: column;
 }
 
-
 .priceFetcher {  
   margin: 10px 0;  
 }
@@ -15,4 +14,13 @@
 .returnBars {
   display: flex;
   flex-direction: column;
+}
+
+.returnFigure{
+  margin: 1rem;
+}
+
+.returnFigureTitle{
+  margin: 1rem 0;
+  font-size: 1.8rem;
 }

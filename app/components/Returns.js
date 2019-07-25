@@ -73,8 +73,18 @@ export default class Returns extends Component {
           {
             singleReturns && portfolioReturns && 
             <Fragment>
-              <ReturnBar data={singleReturns} isFilterNull={isFilterNull}/>
-              <ReturnBar data={portfolioReturns} isFilterNull={isFilterNull}/>
+              <div className={styles.returnFigure}>
+                <div className={styles.returnFigureTitle}> 
+                  Annualized Returns - Symbol(s) vs. Total 
+                </div>
+                <ReturnBar data={singleReturns} isFilterNull={isFilterNull}/>
+              </div>
+              <div className={styles.returnFigure}>
+                <div className={styles.returnFigureTitle}> 
+                  Annualized Returns - Stock vs. Bond vs. Total
+                </div>
+                <ReturnBar data={portfolioReturns} isFilterNull={isFilterNull}/>
+              </div>
             </Fragment>
           }
         </div>
