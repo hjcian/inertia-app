@@ -25,17 +25,17 @@ const sideNav = [
   {
     url: routes.Import,
     icon: faFileImport,
-    text: "Importing"
+    text: "Import"
   },  
   {
     url: routes.Returns,
     icon: faChartLine,
-    text: "Returns"
+    text: "Calculate"
   },
   {
     url: routes.Rebalance,
     icon: faBalanceScale,
-    text: "Rebalancing"
+    text: "Rebalance"
   },
 ]
 export default class MainVisual extends Component {
