@@ -2,4 +2,9 @@
 }
 
 .csvReaderInput {
+  border-style: none;
+}
+
+.inputErrorMsg{
+  width: 40rem;
 }

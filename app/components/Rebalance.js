@@ -101,8 +101,6 @@ export default class Rebalance extends Component {
     const sumTargetRatio = editedData
                 .map(({targetRatio}) => parseFloat(targetRatio) )
                 .reduce((pre, cur) => pre + cur, 0)
-    console.log(JSON.stringify(editedData, null, 4))
-    console.log(sumTargetRatio)
     initDataDict()
     return (
       <div className={styles.rebalanceBody}>
