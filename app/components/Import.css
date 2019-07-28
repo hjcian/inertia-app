@@ -8,3 +8,53 @@
 .inputErrorMsg{
   width: 40rem;
 }
+
+.dropZone {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-style: dashed;
+  border-width: 0.25rem;
+  border-radius: 1.0rem;
+  border-color: #adb5bd;
+  background-color: #f8f9fa;
+  padding: 60px 0;
+  margin: 1.0rem 0;
+  height: 50vh;
+}
+
+.dropZoneOk {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20rem;
+  border-style: dashed;
+  border-width: 0.15rem;
+  border-radius: 1.0rem;
+  border-color: #adb5bd;
+  background-color: #e7f5ff;
+  padding: 10px 0;
+  margin: 1.0rem 0;
+}
+
+.dropZoneError{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 1.0rem;
+  background-color: #ffc9c9;
+  padding: 60px 0;
+  margin: 1.0rem 0;
+}
+
+.dropZoneText {
+  color: #adb5bd;
+}
+
+.dropZoneOkText{
+  color: #adb5bd;
+}
+
+.dropZoneErrorText{
+  color: #c92a2a;
+}

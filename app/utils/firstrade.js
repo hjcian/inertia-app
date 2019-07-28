@@ -29,14 +29,14 @@ class FirstradeRecord {
     this.currentPrice = null
     this.currentDate = null
   }
-  add(recordArray) {
-    this.Quantity = [...this.Quantity, parseFloat(recordArray[QuantityIdx])]
-    this.Price = [...this.Price, parseFloat(recordArray[PriceIdx])]
-    this.Action = [...this.Action, recordArray[ActionIdx].trim().toLowerCase()]
-    this.Description = [...this.Description, recordArray[DescriptionIdx]]
-    let date = new Date(recordArray[TradeDateIdx])
+  add(recordObj) {
+    this.Quantity = [...this.Quantity, parseFloat(recordObj['Quantity'])]
+    this.Price = [...this.Price, parseFloat(recordObj['Price'])]
+    this.Action = [...this.Action, recordObj['Action'].trim().toLowerCase()]
+    this.Description = [...this.Description, recordObj['Description']]
+    let date = new Date(recordObj['TradeDate'])
     this.TradeDate = [...this.TradeDate, date]
-    this.Amount = [...this.Amount, parseFloat(recordArray[AmountIdx])]
+    this.Amount = [...this.Amount, parseFloat(recordObj['Amount'])]
   }
   getQuantity() {
     const totalQuantity = this.Quantity.reduce((a, b) => a + b)
@@ -132,12 +132,12 @@ export class FirstradeRecordContainer {
   getSymbols() {
     return Object.keys(this.container)
   }
-  add(symbol, recordArray) {
+  add(symbol, recordObj) {
     let normSymbol = symbol.trim().toUpperCase()
     if (!this.container.hasOwnProperty(normSymbol)) {    
       this.container[normSymbol] = new FirstradeRecord(normSymbol)
     }
-    this.container[normSymbol].add(recordArray)
+    this.container[normSymbol].add(recordObj)
   }
   getDetailReturns() {
     let totalCashAmounts = []
@@ -217,13 +217,13 @@ export class FirstradeRecordContainer {
 
 export const isCSVFormatValid = (data) => {
   if (
-    data[0].indexOf('Symbol') !== SymbolIdx ||
-    data[0].indexOf('Quantity') !== QuantityIdx ||
-    data[0].indexOf('Price') !== PriceIdx ||
-    data[0].indexOf('Action') !== ActionIdx ||
-    data[0].indexOf('TradeDate') !== TradeDateIdx ||
-    data[0].indexOf('Amount') !== AmountIdx
-  ) {
+    !data[0].hasOwnProperty("Symbol") ||
+    !data[0].hasOwnProperty("Quantity") ||
+    !data[0].hasOwnProperty("Price") ||
+    !data[0].hasOwnProperty("Action") ||
+    !data[0].hasOwnProperty("TradeDate") ||
+    !data[0].hasOwnProperty("Amount")
+    ) {
     return false
   } else {
     return true
@@ -233,16 +233,11 @@ export const isCSVFormatValid = (data) => {
 export const parseCSV = (data) => {
   let profile = {}
   let firstradeRecordContainer = new FirstradeRecordContainer()
-  data.forEach( (element, idx) => {
-    if (idx > 0 && element.length > 1 ) {
-      const action = element[ActionIdx].toLowerCase()
-      const quantity = parseFloat(element[QuantityIdx])
-      const description = element[DescriptionIdx]
-      const symbol = element[SymbolIdx].trim().toUpperCase()
-      if (symbol.length){
-        firstradeRecordContainer.add(symbol, element)
-      }
-    }
+  data.forEach( val => {
+    const symbol = val['Symbol'].trim().toUpperCase()
+    if (symbol && symbol.length){
+      firstradeRecordContainer.add(symbol, val)
+    }    
   })
   return firstradeRecordContainer
 }

@@ -1,107 +1,106 @@
 // @flow
 import React, { Component, useState, useCallback } from 'react'
-import { Message } from 'semantic-ui-react'
+import { Message, Icon } from 'semantic-ui-react'
 import CSVReader from 'react-csv-reader'
+import csv from 'csv-parser'
+import fs from 'fs'
 import {useDropzone} from 'react-dropzone'
 
 
 import PortfolioPie from './Charts/PortfolioPie'
 import OpenLink from './SubComponents/OpenLink'
 import { parseCSV, isCSVFormatValid } from '../utils/firstrade'
-import { dataStore } from '../utils/store'
+import { dataStore, fileStore } from '../utils/store'
 import dump from '../utils/dump.json'
 
 import styles from './Import.css'
+import { type } from 'os';
 
-const Dropzone = () => {
-  
-  const [isFileImported, setIsFileImported] = useState(null)
+const Dropzone = ({isDataReady, setIsDataReady}) => {
+  const [isFormatValid, setIsFormatValid] = useState(isDataReady)
+  const [errorMsg, setErrorMsg] = useState('')
   const onDrop = useCallback(acceptedFiles => {
-    // Do something with the files
-    acceptedFiles.forEach( val => {
-      console.log(val.name)
-      console.log(val.path)
-      setIsFileImported(true)
-    })
-  }, [])
-  const { getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
-  console.log("out", isFileImported)
-
+    const buffer = []
+    console.log(`number of file: ${acceptedFiles.length}`)
+    try {
+      acceptedFiles.forEach( val => {
+        const { name, path } = val
+        fs.createReadStream(val.path)
+          .pipe(csv())
+          .on('data', (data) => buffer.push(data))
+          .on('end', () => {
+            if (!isCSVFormatValid(buffer)) {
+              setErrorMsg(`Invalid CSV format, try another file agian.`)
+              setIsFormatValid(false)
+            } else {
+              const dataContainer = parseCSV(buffer)
+              dataStore.save(dataContainer)
+              setIsFormatValid(true)
+              setIsDataReady(true)
+              fileStore.save(path, name, data)              
+            }
+          })      
+        })      
+    } catch (error) {
+      setErrorMsg(`Unexpected error, try another file agian. (console: ${error})`)
+      setIsFormatValid(false)
+    }
+    }, [])
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
   return (
-    <div {...getRootProps()}>
+    <div className={
+      isFormatValid === null ? 
+      styles.dropZone : 
+      ( isFormatValid === true ? styles.dropZoneOk : styles.dropZoneError )} 
+        {...getRootProps()}>
       <input {...getInputProps()} />
       {
-        isFileImported ?
-        <p>Re-import file agian</p>:
-        <p>Drop the file here ...</p>
+        isDragActive === true ? 
+          <p className={styles.dropZoneText}>
+              <Icon color='grey' name='hand spock outline'/> Drop the file to import...
+          </p> 
+        : (
+          isFormatValid === null ?
+          <p className={styles.dropZoneText}>
+            <Icon color='grey' name='upload'/> Drop file or click here to import
+          </p> : (isFormatValid === true ? 
+            <p className={styles.dropZoneOkText}>
+              <Icon color='grey' name='check circle outline'/> Click here to re-import
+            </p> :
+            <p className={styles.dropZoneErrorText}>
+              <Icon color='red' name='ban'/> {errorMsg}
+            </p>
+          )
+        )
       }
     </div>
   )
 }
 
-
-const Import = ({}) => {
-  const [isValidFormat, setFormatIsValid] = useState(null)
-  const [errMessage, setErrMessage] = useState(null)
-  function handleParsedData(data) {
-    if ( !isCSVFormatValid(data) ){
-      setFormatIsValid(false)
-      setErrMessage("Not a supported format, please check online document for more details.")
-    }
-    else {
-      setFormatIsValid(true)
-      const firstradeRecordContainer = parseCSV(data)
-      dataStore.save(firstradeRecordContainer)
-    }
-  } 
-  function handleError(error) {
-    console.log(error)
+export default class Import extends Component {
+  state = {
+    isDataReady: fileStore.isReady
+  }  
+  setIsDataReady = (state) => {
+    this.setState({isDataReady: state})
   }
-  function onDrop(files) {
-    files.forEach(file => {
-      console.log(file.name, file)
-    })
+  render () {
+    const { isDataReady } = this.state
+    const { data } = dataStore
+    return (
+      <div className={styles.importBody} data-tid='container'>
+        <Message>
+          <Message.Header>Import Data</Message.Header>
+          <Message.Content>Import your historical transaction with CSV format.</Message.Content>
+        </Message>
+        <Dropzone isDataReady={isDataReady} setIsDataReady={this.setIsDataReady} />
+        {
+          data &&
+          <PortfolioPie           
+            assetArray={data.getSummary()}
+            />
+        }
+      </div>      
+    )
   }
-  const { data } = dataStore
-  return (
-    <div className={styles.importBody} data-tid='container'>
-      <Message>
-        <Message.Header>Import Data</Message.Header>
-        <Message.Content>匯入歷史交易資料。目前支援的資料來源：</Message.Content>
-        <Message.List>
-          <Message.Item><OpenLink text='第一證券(Firstrade Securities Inc.)' href='https://www.firstrade.com'/></Message.Item>
-        </Message.List>
-      </Message>
-      <Dropzone/>
-      {/* <CSVReader
-        cssClass={styles.csvReader}
-        cssInputClass={styles.csvReaderInput}
-        onFileLoaded={handleParsedData}
-        onError={handleError}
-        inputId="ObiWan"
-        inputStyle={{color: 'black'}}
-      /> */}
-      { 
-        // isValidFormat === false && 
-        1 && 
-        <div className={styles.inputErrorMsg}> 
-          <Message 
-            warning
-            icon='warning sign'
-            header='Format not sopprted'
-            content={errMessage}
-            size='mini'
-          />
-        </div>
-      }
-      {
-        data &&
-        <PortfolioPie           
-          assetArray={data.getSummary()}
-          />
-      }
-    </div>      
-  )
 }
-
-export default Import
