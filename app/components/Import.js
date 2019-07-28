@@ -1,11 +1,9 @@
 // @flow
 import React, { Component, useState, useCallback } from 'react'
 import { Message, Icon } from 'semantic-ui-react'
-import CSVReader from 'react-csv-reader'
 import csv from 'csv-parser'
 import fs from 'fs'
 import {useDropzone} from 'react-dropzone'
-
 
 import PortfolioPie from './Charts/PortfolioPie'
 import OpenLink from './SubComponents/OpenLink'
