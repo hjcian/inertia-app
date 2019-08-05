@@ -35,7 +35,7 @@ const Dropzone = ({isDataReady, setIsDataReady}) => {
               dataStore.save(dataContainer)
               setIsFormatValid(true)
               setIsDataReady(true)
-              fileStore.save(path, name, data)              
+              fileStore.save(path, name, buffer)              
             }
           })      
         })      
@@ -43,7 +43,7 @@ const Dropzone = ({isDataReady, setIsDataReady}) => {
       setErrorMsg(`Unexpected error, try another file agian. (console: ${error})`)
       setIsFormatValid(false)
     }
-    }, [])
+  }, [])
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
   return (
     <div className={
