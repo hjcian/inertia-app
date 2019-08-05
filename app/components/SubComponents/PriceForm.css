@@ -1,7 +1,6 @@
 .priceGetter {
   margin-bottom: 15px;
-  display: flex;    
-
+  display: flex;
 }
 
 .priceForm {
@@ -9,8 +8,12 @@
   flex-direction: column;
   align-items: start;
 }
+.datePicker{
+  display: flex;
+  align-items: center;  
+}
 
-.datePicker {
+.pickerContainer {
   width: 10rem;
   z-index: 99;
 }
@@ -21,7 +24,7 @@
 }
 
 .formButton{
-
+margin: 0.5rem 0;
 }
 
 .symbolSlot{
@@ -34,4 +37,9 @@
 
 .symbolInput{
 
+}
+
+.returnFigureTitle{
+  margin: 1rem 0;
+  font-size: 1.8rem;
 }
