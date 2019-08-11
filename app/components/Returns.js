@@ -39,7 +39,6 @@ export default class Returns extends Component {
     }
   }
   priceSyncher = (prices, prevDate) => {
-    console.log(`prevDate: ${prevDate}`)
     this.setState({
       symbolPrices: prices,
       prevDate

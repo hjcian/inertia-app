@@ -27,7 +27,6 @@ const Dropzone = ({ isDataReady, setIsDataReady }) => {
               setErrorMsg(`Invalid CSV format, try another file agian.`)
               setIsFormatValid(false)
             } else {
-              console.log(JSON.stringify(buffer, null, 4))
               const dataContainer = parseCSV(buffer)
               dataStore.save(dataContainer)
               setIsFormatValid(true)
