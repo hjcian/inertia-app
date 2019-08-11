@@ -24,6 +24,7 @@
   padding: 60px 0;
   margin: 1.0rem 0;
   height: 50vh;
+  width: 80vw;
   transition: all 500ms ease; 
 }
 .dropZone:hover {

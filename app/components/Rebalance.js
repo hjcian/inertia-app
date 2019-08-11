@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Message, Checkbox, Label, Button, Icon } from 'semantic-ui-react'
+import { Input, Message } from 'semantic-ui-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faDollarSign,
@@ -16,14 +16,11 @@ import { formatMoney } from '../utils/stringFormatter'
 import { dataStore } from '../utils/store'
 import AdjustBar from './SubComponents/AdjustBar'
 import styles from './Rebalance.css'
-import { parse } from 'semver'
-import { bold } from 'ansi-colors'
 
 const initDataDict = () => {
   const { data } = dataStore
   if (data) {
     let dataDict = {}
-    const symbolArray = data.getSymbols()
     data.currentPrices.forEach(({ symbol, price }) => {
       dataDict[symbol] = {
         price,

@@ -1,8 +1,8 @@
 import { remote } from 'electron'
 import { Finance } from 'financejs'
-const finance = new Finance()
 
 import { stockSet, bondSet } from '../constants/symbols'
+const finance = new Finance()
 
 export const SymbolIdx = 0
 export const QuantityIdx = 1
@@ -17,7 +17,7 @@ const getAssetType = (symbol) => {
 }
 
 class FirstradeRecord {
-  constructor(symbol){
+  constructor (symbol) {
     this.Symbol = symbol.trim().toUpperCase()
     this.Quantity = []
     this.Price = []
@@ -29,7 +29,7 @@ class FirstradeRecord {
     this.currentPrice = null
     this.currentDate = null
   }
-  add(recordObj) {
+  add (recordObj) {
     this.Quantity = [...this.Quantity, parseFloat(recordObj['Quantity'])]
     this.Price = [...this.Price, parseFloat(recordObj['Price'])]
     this.Action = [...this.Action, recordObj['Action'].trim().toLowerCase()]
@@ -38,23 +38,23 @@ class FirstradeRecord {
     this.TradeDate = [...this.TradeDate, date]
     this.Amount = [...this.Amount, parseFloat(recordObj['Amount'])]
   }
-  getQuantity() {
+  getQuantity () {
     const totalQuantity = this.Quantity.reduce((a, b) => a + b)
     return totalQuantity
   }
-  getInvestHistory() {
+  getInvestHistory () {
     const totalQuantity = this.getQuantity()
     let amounts = []
     let dates = []
     for (let i = 0; i < this.Quantity.length; ++i) {
-      if (this.Action[i] === 'buy' || this.Action[i] === 'other'){
+      if (this.Action[i] === 'buy' || this.Action[i] === 'other') {
         amounts = [...amounts, this.Amount[i]]
         dates = [...dates, this.TradeDate[i]]
       }
     }
     return { amounts, dates, totalQuantity }
   }
-  updateCurrentPrice(priceStr, date) {    
+  updateCurrentPrice (priceStr, date) {
     const price = parseFloat(priceStr)
     if (price) {
       this.currentPrice = price
@@ -62,9 +62,9 @@ class FirstradeRecord {
     } else {
       this.currentPrice = null
       this.currentDate = null
-    }    
+    }
   }
-  getCashFlow() {
+  getCashFlow () {
     let cashAmounts = []
     let cashDates = []
     if (this.currentPrice !== null && this.currentDate !== null) {
@@ -74,29 +74,29 @@ class FirstradeRecord {
     }
     return { cashAmounts, cashDates }
   }
-  calcAnnualReturn() {
+  calcAnnualReturn () {
     try {
-      const { cashAmounts, cashDates } = this.getCashFlow()      
+      const { cashAmounts, cashDates } = this.getCashFlow()
       const xirr = finance.XIRR(cashAmounts, cashDates, 0)
       return xirr
     } catch (error) {
       return null
     }
   }
-  getSummary() {
+  getSummary () {
     let summary = {
       symbol: this.Symbol,
       assetType: this.assetType,
       quantity: 0,
       invest: 0,
       reinAmount: 0,
-      cost: 0,
+      cost: 0
     }
-    this.Action.forEach((action, idx)=>{
+    this.Action.forEach((action, idx) => {
       const quantity = this.Quantity[idx]
       summary.quantity += quantity
       const description = this.Description[idx]
-      if (action === 'buy'){
+      if (action === 'buy') {
         const invest = this.Price[idx] * quantity
         summary.invest += invest
         summary.cost += invest
@@ -111,11 +111,11 @@ class FirstradeRecord {
 }
 
 export class FirstradeRecordContainer {
-  constructor() {
+  constructor () {
     this.container = {}
     this.currentPrices = []
   }
-  getQuantity(symbol){
+  getQuantity (symbol) {
     let normSymbol = symbol.trim().toUpperCase()
     if (this.container.hasOwnProperty(normSymbol)) {
       return this.container[normSymbol].getQuantity()
@@ -123,32 +123,32 @@ export class FirstradeRecordContainer {
       return -1
     }
   }
-  updateCurrentPrice(prices, date) {
+  updateCurrentPrice (prices, date) {
     this.currentPrices = prices
-    prices.forEach( ({symbol, price}) => {
+    prices.forEach(({ symbol, price }) => {
       this.container[symbol].updateCurrentPrice(price, new Date(date))
-    })  
+    })
   }
-  getSymbols() {
+  getSymbols () {
     return Object.keys(this.container)
   }
-  add(symbol, recordObj) {
+  add (symbol, recordObj) {
     let normSymbol = symbol.trim().toUpperCase()
-    if (!this.container.hasOwnProperty(normSymbol)) {    
+    if (!this.container.hasOwnProperty(normSymbol)) {
       this.container[normSymbol] = new FirstradeRecord(normSymbol)
     }
     this.container[normSymbol].add(recordObj)
   }
-  getDetailReturns() {
+  getDetailReturns () {
     let totalCashAmounts = []
     let totalCashDates = []
-    let data = Object.keys(this.container).map( (symbol) => {
+    let data = Object.keys(this.container).map((symbol) => {
       const symbolObj = this.container[symbol]
       const { cashAmounts, cashDates } = symbolObj.getCashFlow()
       totalCashAmounts = [...totalCashAmounts, ...cashAmounts]
       totalCashDates = [...totalCashDates, ...cashDates]
-      const xirr = symbolObj.calcAnnualReturn()      
-      return { name: symbol, return: xirr }      
+      const xirr = symbolObj.calcAnnualReturn()
+      return { name: symbol, return: xirr }
     })
     const totalXIRR = totalCashAmounts.length ? finance.XIRR(totalCashAmounts, totalCashDates, 0) : null
     data.push({
@@ -163,52 +163,52 @@ export class FirstradeRecordContainer {
     } else if (assetType === 'bond') {
       return value => bondSet.has(value)
     } else {
-      return value => (!stockSet.has(value) && !bondSet.has(value)) ? true : false
+      return value => !!((!stockSet.has(value) && !bondSet.has(value)))
     }
   }
-  getAssetReturns(assetType='stock') {
+  getAssetReturns (assetType = 'stock') {
     const isThisAsset = this._getAssetSwitcher(assetType)
     let retCashAmounts = []
     let retCashDates = []
-    Object.keys(this.container).forEach( (symbol) => {
+    Object.keys(this.container).forEach((symbol) => {
       if (isThisAsset(symbol)) {
         const symbolObj = this.container[symbol]
         const { cashAmounts, cashDates } = symbolObj.getCashFlow()
         retCashAmounts = [...retCashAmounts, ...cashAmounts]
         retCashDates = [...retCashDates, ...cashDates]
-      }      
+      }
     })
-    const retXIRR = retCashAmounts.length ? finance.XIRR(retCashAmounts, retCashDates, 0): null
+    const retXIRR = retCashAmounts.length ? finance.XIRR(retCashAmounts, retCashDates, 0) : null
     return { retCashAmounts, retCashDates, retXIRR }
   }
-  getAllocationReturns() {
-    const { 
-      retCashAmounts: stockAmounts, 
+  getAllocationReturns () {
+    const {
+      retCashAmounts: stockAmounts,
       retCashDates: stockDates,
-      retXIRR: stockReturns,
+      retXIRR: stockReturns
     } = this.getAssetReturns('stock')
-    const { 
-      retCashAmounts: bondAmounts, 
+    const {
+      retCashAmounts: bondAmounts,
       retCashDates: bondDates,
-      retXIRR: bondReturns,
-     } = this.getAssetReturns('bond')
-    const { 
-      retCashAmounts: uncateAmounts, 
+      retXIRR: bondReturns
+    } = this.getAssetReturns('bond')
+    const {
+      retCashAmounts: uncateAmounts,
       retCashDates: uncateDates,
-      retXIRR: uncateReturns,
+      retXIRR: uncateReturns
     } = this.getAssetReturns('uncate')
     const totalAmouns = [...stockAmounts, ...bondAmounts, ...uncateAmounts]
     const totalDates = [...stockDates, ...bondDates, ...uncateDates]
-    const totalXIRR = totalAmouns.length ? finance.XIRR(totalAmouns, totalDates, 0): null
+    const totalXIRR = totalAmouns.length ? finance.XIRR(totalAmouns, totalDates, 0) : null
     return [
-      { name: 'STOCK', return: stockReturns, },
-      { name: 'BOND', return: bondReturns, },
-      { name: 'UNCAT', return: uncateReturns, },
-      { name: 'TOTAL', return: totalXIRR, },
+      { name: 'STOCK', return: stockReturns },
+      { name: 'BOND', return: bondReturns },
+      { name: 'UNCAT', return: uncateReturns },
+      { name: 'TOTAL', return: totalXIRR }
     ]
   }
-  getSummary() {
-    const assetArray = Object.keys(this.container).map( symbol => this.container[symbol].getSummary() )
+  getSummary () {
+    const assetArray = Object.keys(this.container).map(symbol => this.container[symbol].getSummary())
     return assetArray
   }
   async _display () {
@@ -217,13 +217,13 @@ export class FirstradeRecordContainer {
 
 export const isCSVFormatValid = (data) => {
   if (
-    !data[0].hasOwnProperty("Symbol") ||
-    !data[0].hasOwnProperty("Quantity") ||
-    !data[0].hasOwnProperty("Price") ||
-    !data[0].hasOwnProperty("Action") ||
-    !data[0].hasOwnProperty("TradeDate") ||
-    !data[0].hasOwnProperty("Amount")
-    ) {
+    !data[0].hasOwnProperty('Symbol') ||
+    !data[0].hasOwnProperty('Quantity') ||
+    !data[0].hasOwnProperty('Price') ||
+    !data[0].hasOwnProperty('Action') ||
+    !data[0].hasOwnProperty('TradeDate') ||
+    !data[0].hasOwnProperty('Amount')
+  ) {
     return false
   } else {
     return true
@@ -231,23 +231,22 @@ export const isCSVFormatValid = (data) => {
 }
 
 export const parseCSV = (data) => {
-  let profile = {}
   let firstradeRecordContainer = new FirstradeRecordContainer()
-  data.forEach( val => {
+  data.forEach(val => {
     const symbol = val['Symbol'].trim().toUpperCase()
-    if (symbol && symbol.length){
+    if (symbol && symbol.length) {
       firstradeRecordContainer.add(symbol, val)
-    }    
+    }
   })
   return firstradeRecordContainer
 }
 
 export const computeTotalAmount = (data) => {
   let totalAmount = 0
-  data.forEach((element, idx) => {        
-      if (idx > 0 && element.length > 1) {            
-        totalAmount += parseFloat(element[AmountIdx])          
-      }
-    })
+  data.forEach((element, idx) => {
+    if (idx > 0 && element.length > 1) {
+      totalAmount += parseFloat(element[AmountIdx])
+    }
+  })
   return totalAmount
 }
