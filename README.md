@@ -39,4 +39,3 @@ Licensed under the [MIT](LICENSE) license.
  ## Improvements	
 1. 遠端取得資料失敗時彈info(檢查網路連線、換個後端、或改手動輸入)	
 1. program icon	
-1. rebalance should be pretty formatting
