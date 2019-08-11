@@ -42,7 +42,7 @@ export default class PriceFetcher extends Component {
           size='mini'
           type='text'
           value={apikey}
-          placeholder='paste apikey'
+          placeholder='paste apikey here...'
           onChange={this.handleAPIKeyChange}
           action
         >
@@ -55,6 +55,7 @@ export default class PriceFetcher extends Component {
             onChange={this.handleSelectorChange}
           />
           <Button
+            size='mini'
             type='submit'
             loading={isLoading}
             content='Submit'

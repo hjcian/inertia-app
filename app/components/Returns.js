@@ -1,6 +1,5 @@
-// @flow
 import React, { Component, Fragment } from 'react'
-import { Message, Segment, Header } from 'semantic-ui-react'
+import { Message, Header, Segment } from 'semantic-ui-react'
 
 import { dataStore } from '../utils/store'
 
@@ -49,7 +48,6 @@ export default class Returns extends Component {
   render () {
     const { data } = dataStore
     const { symbolPrices, prevDate, singleReturns, portfolioReturns, isFilterNull } = this.state
-    console.log(symbolPrices)
     return (
       <div className={styles.returnsBody}>
         <Message>
@@ -59,13 +57,13 @@ export default class Returns extends Component {
         <div className={styles.priceFetcher}>
           {
             data &&
-            <Fragment>
+            <Segment compact>
               <Header as='h4' size='tiny' color='grey'>
                 <Header.Content>Auto Fetch</Header.Content>
-                <Header.Subheader>Automatically fetching the close prices from finalcial data provider.</Header.Subheader>
+                <Header.Subheader>Automatically fetching the latest close prices from finalcial data providers.</Header.Subheader>
               </Header>
               <PriceFetcher symbols={data.getSymbols()} priceSyncher={this.priceSyncher} />
-            </Fragment>
+            </Segment>
           }
         </div>
         <div className={styles.priceForm}>
@@ -73,7 +71,7 @@ export default class Returns extends Component {
             symbolPrices &&
             <Fragment>
               <Header as='h4' size='tiny' color='grey'>
-                <Header.Content>Fill the prices</Header.Content>
+                <Header.Content>Latest close prices</Header.Content>
                 <Header.Subheader>Fill the current prices and corresponding date by Auto Fetch or yourself.</Header.Subheader>
               </Header>
               <PriceForm prices={symbolPrices} prevDate={prevDate} updateReturns={this.updateReturns} />
@@ -83,20 +81,20 @@ export default class Returns extends Component {
         <div className={styles.returnBars}>
           {
             singleReturns && portfolioReturns &&
-              <Fragment>
-                <div className={styles.returnFigure}>
-                  <div className={styles.returnFigureTitle}>
-                  Annualized Returns - Symbol(s) vs. Total
-                  </div>
-                  <ReturnBar data={singleReturns} isFilterNull={isFilterNull} />
-                </div>
-                <div className={styles.returnFigure}>
-                  <div className={styles.returnFigureTitle}>
-                  Annualized Returns - Stock vs. Bond vs. Total
-                  </div>
-                  <ReturnBar data={portfolioReturns} isFilterNull={isFilterNull} />
-                </div>
-              </Fragment>
+            <Fragment>
+              <Segment className={styles.returnFigure} secondary >
+                <Header as='h4' size='tiny' color='grey' textAlign='center'>
+                  <Header.Content>Annualized Returns - Symbol(s) vs. Total</Header.Content>
+                </Header>
+                <ReturnBar data={singleReturns} isFilterNull={isFilterNull} />
+              </Segment>
+              <Segment className={styles.returnFigure} secondary >
+                <Header as='h4' size='tiny' color='grey' textAlign='center'>
+                  <Header.Content>Annualized Returns - Stock vs. Bond vs. Total</Header.Content>
+                </Header>
+                <ReturnBar data={portfolioReturns} isFilterNull={isFilterNull} />
+              </Segment>
+            </Fragment>
           }
         </div>
       </div>

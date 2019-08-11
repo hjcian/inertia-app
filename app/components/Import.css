@@ -9,6 +9,11 @@
   width: 40rem;
 }
 
+.dropZoneContainer {
+  display: flex;
+  justify-content: center;
+}
+
 .dropZone {
   display: flex;
   justify-content: center;
@@ -31,6 +36,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   width: 25rem;
   border: 0.15rem dashed #adb5bd;  
   border-radius: 1.0rem;  

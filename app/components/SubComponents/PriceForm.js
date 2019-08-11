@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Button, Header } from 'semantic-ui-react'
+import { Input, Button, Label, Header } from 'semantic-ui-react'
 import ModernDatepicker from 'react-modern-datepicker'
 
 import styles from './PriceForm.css'
@@ -45,16 +45,13 @@ export default class PriceForm extends Component {
             symbolPrices.map(({ symbol, price }, idx) => {
               return (
                 <div key={idx} className={styles.symbolSlot}>
-                  <div className={styles.symbolText}>
-                    {symbol}
-                  </div>
                   <div className={styles.symbolInput}>
                     <Input
+                      fluid
                       placeholder={symbol}
                       name={symbol}
                       value={price || ''}
                       onChange={this.handleSingleChange}
-                      type='number' step='0.01' min='1' max='9999'
                       size='mini'
                     />
                   </div>
@@ -63,10 +60,11 @@ export default class PriceForm extends Component {
             })
           }
         </div>
+        <Header as='h4' size='tiny' color='grey'>
+          <Header.Content>Date</Header.Content>
+          <Header.Subheader>Fill the corresponding date of latest close prices.</Header.Subheader>
+        </Header>
         <div className={styles.datePicker}>
-          <Header as='h4' size='tiny' color='grey' textAlign='center'>
-            Corresponding date
-          </Header>
           <div className={styles.pickerContainer}>
             <ModernDatepicker
               date={dateStr}

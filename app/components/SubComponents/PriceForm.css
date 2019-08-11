@@ -36,7 +36,8 @@ margin: 0.5rem 0;
 }
 
 .symbolInput{
-
+  width: 7rem;
+  margin: 1px 2px;
 }
 
 .returnFigureTitle{
